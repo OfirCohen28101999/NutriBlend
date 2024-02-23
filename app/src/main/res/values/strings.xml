@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">NutriBlend</string>
     <string name="add_recipe">add new recipe</string>
+    <string name="recipe_image">recipe image</string>
+    <string name="recipe_title_textview">recipe title</string>
+    <string name="recipe_ingredients_textview">ingredients</string>
+    <string name="recipe_preparation_steps_textview">preparation steps</string>
+    <string name="recipe_title_textBox">recipe title</string>
+    <string name="recipe_ingredients_textbox">recipe ingredients</string>
+    <string name="recipe_preparation_steps_textbox">recipe preparation steps</string>
+    <string name="recipe_cancel_recipe_btn_text">Cancel</string>
+    <string name="recipe_save_recipe_btn_text">Save</string>
 </resources>

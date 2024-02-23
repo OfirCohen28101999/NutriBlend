@@ -1,5 +1,6 @@
 package com.example.nutriblend
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onAddRecipeButtonClicked(view: View){
-        // INTENT TO GO TO ADD RECIPE ACTIVITY
+        val intent = Intent(this, AddRecipeActivity::class.java)
+        startActivity(intent)
     }
 }
