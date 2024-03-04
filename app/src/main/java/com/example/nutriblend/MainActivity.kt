@@ -1,22 +1,71 @@
 package com.example.nutriblend
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
-
 class MainActivity : AppCompatActivity() {
+
+    var fragmentOne: BlueFragment? = null
+    var fragmentTwo: BlueFragment? = null
+    var fragmentThree: BlueFragment? = null
+    var fragmentFour: BlueFragment? = null
+
+    var buttonOne: Button? = null
+    var buttonTwo: Button? = null
+    var buttonThree: Button? = null
+    var buttonFour: Button? = null
+
+    var currentlyDisplayedFragment: BlueFragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val addRecipeButton: Button = findViewById(R.id.btnMainAddRecipe)
-        addRecipeButton.setOnClickListener(::onAddRecipeButtonClicked)
-    }
+        fragmentOne = BlueFragment.newInstance("one")
+        fragmentTwo = BlueFragment.newInstance("two")
+        fragmentThree = BlueFragment.newInstance("three")
+        fragmentFour = BlueFragment.newInstance("four")
 
-    fun onAddRecipeButtonClicked(view: View){
-        val intent = Intent(this, AddRecipeActivity::class.java)
-        startActivity(intent)
+        buttonOne = findViewById(R.id.btnMainTabOne)
+        buttonTwo = findViewById(R.id.btnMainTabTwo)
+        buttonThree = findViewById(R.id.btnMainTabThree)
+        buttonFour = findViewById(R.id.btnMainTabFour)
+
+        buttonOne?.setOnClickListener{
+            fragmentOne?.let {
+                displayBlueFragment(it)
+            }
+        }
+
+        buttonTwo?.setOnClickListener{
+            fragmentTwo?.let {
+                displayBlueFragment(it)
+            }
+        }
+
+        buttonThree?.setOnClickListener{
+            fragmentThree?.let {
+                displayBlueFragment(it)
+            }
+        }
+
+        buttonFour?.setOnClickListener{
+            fragmentFour?.let {
+                displayBlueFragment(it)
+            }
+        }
+
+        fragmentOne?.let {
+            displayBlueFragment(it)
+        }
+    }
+    fun displayBlueFragment(fragment: BlueFragment){
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.flMainFragment, fragment)
+        currentlyDisplayedFragment?.let {
+            transaction.remove(it)
+        }
+        transaction.addToBackStack("tag")
+        transaction.commit()
+        currentlyDisplayedFragment = fragment
     }
 }
