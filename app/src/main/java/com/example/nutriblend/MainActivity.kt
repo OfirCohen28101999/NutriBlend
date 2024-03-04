@@ -3,9 +3,12 @@ package com.example.nutriblend
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.fragment.app.Fragment
+import com.example.nutriblend.Modules.Recipes.RecipesFragment
+
 class MainActivity : AppCompatActivity() {
 
-    var fragmentOne: BlueFragment? = null
+    var fragmentOne: RecipesFragment? = null
     var fragmentTwo: BlueFragment? = null
     var fragmentThree: BlueFragment? = null
     var fragmentFour: BlueFragment? = null
@@ -15,12 +18,12 @@ class MainActivity : AppCompatActivity() {
     var buttonThree: Button? = null
     var buttonFour: Button? = null
 
-    var currentlyDisplayedFragment: BlueFragment? = null
+    var currentlyDisplayedFragment: Fragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fragmentOne = BlueFragment.newInstance("one")
+        fragmentOne = RecipesFragment()
         fragmentTwo = BlueFragment.newInstance("two")
         fragmentThree = BlueFragment.newInstance("three")
         fragmentFour = BlueFragment.newInstance("four")
@@ -58,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             displayBlueFragment(it)
         }
     }
-    fun displayBlueFragment(fragment: BlueFragment){
+    fun displayBlueFragment(fragment: Fragment){
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.flMainFragment, fragment)
         currentlyDisplayedFragment?.let {

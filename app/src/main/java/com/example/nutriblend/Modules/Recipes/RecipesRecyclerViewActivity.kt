@@ -3,16 +3,10 @@ package com.example.nutriblend.Modules.Recipes
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriblend.Model.Model
 import com.example.nutriblend.Model.Recipe
-import com.example.nutriblend.Modules.Recipes.Adapter.RecipeViewHolder
 import com.example.nutriblend.Modules.Recipes.Adapter.RecipesRecyclerAdapter
 import com.example.nutriblend.R
 
@@ -25,7 +19,7 @@ class RecipesRecyclerViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_recipes_recycler_view)
 
         recipes = Model.instance.recipes
-        recipesRecyclerView = findViewById(R.id.rvStudentRecyclerList)
+        recipesRecyclerView = findViewById(R.id.rvRecipesRecyclerList)
         recipesRecyclerView?.setHasFixedSize(true)
 
         // set layout manager
