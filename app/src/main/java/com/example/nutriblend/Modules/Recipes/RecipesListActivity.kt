@@ -1,4 +1,4 @@
-package com.example.nutriblend
+package com.example.nutriblend.Modules.Recipes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +11,7 @@ import android.widget.ListView
 import android.widget.TextView
 import com.example.nutriblend.Model.Model
 import com.example.nutriblend.Model.Recipe
+import com.example.nutriblend.R
 
 class RecipesListActivity : AppCompatActivity() {
     private var recipesListView: ListView? = null

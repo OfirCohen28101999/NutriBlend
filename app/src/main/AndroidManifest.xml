@@ -13,24 +13,29 @@
         android:theme="@style/Theme.NutriBlend"
         tools:targetApi="31">
         <activity
-            android:name=".RecipesRecyclerViewActivity"
-            android:exported="true" >
-        </activity>
-        <activity
-            android:name=".RecipesListActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".AddRecipeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".Modules.Recipes.RecipesRecyclerViewActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Modules.Recipes.RecipesListActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".Modules.AddRecipe.AddRecipeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" >
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
     </application>
 

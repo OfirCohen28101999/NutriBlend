@@ -5,7 +5,7 @@
     android:id="@+id/addRecipe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddRecipeActivity">
+    tools:context=".Modules.AddRecipe.AddRecipeActivity">
 
     <ImageView
         android:id="@+id/recipeImage"
