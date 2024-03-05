@@ -8,25 +8,30 @@
     <fragment
         android:id="@+id/recipesFragment"
         android:name="com.example.nutriblend.Modules.Recipes.RecipesFragment"
-        android:label="fragment_recipes"
-        tools:layout="@layout/fragment_recipes" >
+        android:label="All Recipes"
+        tools:layout="@layout/fragment_recipes">
         <action
             android:id="@+id/action_recipesFragment_to_blueFragment"
             app:destination="@id/blueFragment" />
+        <action
+            android:id="@+id/action_recipesFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment" />
     </fragment>
     <fragment
         android:id="@+id/addRecipeFragment"
         android:name="com.example.nutriblend.Modules.AddRecipe.AddRecipeFragment"
-        android:label="fragment_add_recipe"
+        android:label="Add New Recipe"
         tools:layout="@layout/fragment_add_recipe" />
     <fragment
         android:id="@+id/blueFragment"
         android:name="com.example.nutriblend.BlueFragment"
-        android:label="fragment_blue"
-        tools:layout="@layout/fragment_blue" >
+        android:label="Blue Fragment"
+        tools:layout="@layout/fragment_blue">
         <argument
             android:name="TitleArgBlueFragment"
-            app:argType="string"
-            android:defaultValue="new recipe title" />
-    </fragment><action android:id="@+id/action_global_recipesFragment" app:destination="@id/recipesFragment"/><action android:id="@+id/action_global_addRecipeFragment" app:destination="@id/addRecipeFragment"/>
+            android:defaultValue="new recipe title"
+            app:argType="string" />
+    </fragment>
+    <action android:id="@+id/action_global_recipesFragment" app:destination="@id/recipesFragment" />
+    <action android:id="@+id/action_global_addRecipeFragment" app:destination="@id/addRecipeFragment" />
 </navigation>
