@@ -26,9 +26,6 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".Modules.AddRecipe.AddRecipeActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true" >
             <intent-filter>
