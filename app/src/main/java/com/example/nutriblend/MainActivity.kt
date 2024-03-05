@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.nutriblend.Modules.Recipes.RecipesFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     var navController: NavController? = null
@@ -21,6 +22,11 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment?.navController
         navController?.let {
             NavigationUI.setupActionBarWithNavController(this,it)
+        }
+
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.mainActivityBottomNavigationView)
+        navController?.let {
+            NavigationUI.setupWithNavController(bottomNavigationView,it)
         }
     }
 
