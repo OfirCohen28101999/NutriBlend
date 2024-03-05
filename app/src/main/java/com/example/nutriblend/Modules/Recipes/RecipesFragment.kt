@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriblend.Model.Model
@@ -43,6 +45,11 @@ class RecipesFragment : Fragment() {
         adapter.listener = object : RecipesRecyclerViewActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("TAG","RecipesRecyclerAdapter: POSITION CLICKED ${position}")
+                val recipe = recipes?.get(position)
+                recipe?.let {
+                    val action = RecipesFragmentDirections.actionRecipesFragmentToBlueFragment().setTitleArgBlueFragment(it.title)
+                    Navigation.findNavController(view).navigate(action)
+                }
             }
 
             override fun onRecipeClicked(recipe: Recipe?) {
@@ -51,6 +58,11 @@ class RecipesFragment : Fragment() {
 
         recipesRecyclerView?.adapter = adapter
 
+        val addRecipeBtn: ImageButton = view.findViewById(R.id.iBtnRecipesFragmentAddRecipe)
+        val action = Navigation.createNavigateOnClickListener(RecipesFragmentDirections.actionGlobalAddRecipeFragment())
+
+
+        addRecipeBtn.setOnClickListener(action)
         return view
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.example.nutriblend.R
 
 class AddRecipeFragment : Fragment() {
@@ -34,7 +35,7 @@ class AddRecipeFragment : Fragment() {
         cancelRecipeBtn = view.findViewById(R.id.cancelRecipeBtn)
 
         cancelRecipeBtn?.setOnClickListener{
-            // TODO: LATER
+            Navigation.findNavController(it).popBackStack()
         }
         saveRecipeBtn?.setOnClickListener{onSaveRecipeClicked()}
     }
