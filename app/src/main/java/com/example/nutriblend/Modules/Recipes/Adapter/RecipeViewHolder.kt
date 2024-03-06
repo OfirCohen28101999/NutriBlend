@@ -9,7 +9,7 @@ import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.Modules.Recipes.RecipesRecyclerViewActivity
 import com.example.nutriblend.R
 
-class RecipeViewHolder(val itemView: View, val listener: RecipesRecyclerViewActivity.OnItemClickListener?, var recipes: MutableList<Recipe>?): RecyclerView.ViewHolder(itemView){
+class RecipeViewHolder(val itemView: View, val listener: RecipesRecyclerViewActivity.OnItemClickListener?, var recipes: List<Recipe>?): RecyclerView.ViewHolder(itemView){
     var nameTextView: TextView? = null
     var idTextView: TextView? = null
     var recipeCheckbox: CheckBox? = null
