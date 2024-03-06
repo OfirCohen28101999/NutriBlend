@@ -8,18 +8,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriblend.Model.Model
 import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.Modules.Recipes.Adapter.RecipesRecyclerAdapter
-import com.example.nutriblend.R
+import com.example.nutriblend.databinding.ActivityRecipesRecyclerViewBinding
 
-// not in use oops
+// not in use oops, used to demonstrate viewBinding
 
 class RecipesRecyclerViewActivity : AppCompatActivity() {
     var recipesRecyclerView: RecyclerView? = null
     private var recipes: List<Recipe>? = null
     var adapter: RecipesRecyclerAdapter? = null
 
+    private lateinit var binding: ActivityRecipesRecyclerViewBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_recipes_recycler_view)
+
+        binding = ActivityRecipesRecyclerViewBinding.inflate(layoutInflater)
+        // setContentView(R.layout.activity_recipes_recycler_view) // not used with binding
+        setContentView(binding.root)
 
         adapter = RecipesRecyclerAdapter(recipes)
 
@@ -29,7 +34,7 @@ class RecipesRecyclerViewActivity : AppCompatActivity() {
             adapter?.notifyDataSetChanged()
         }
 
-        recipesRecyclerView = findViewById(R.id.rvRecipesRecyclerList)
+        recipesRecyclerView =  binding.rvRecipesRecyclerList // findViewById(R.id.rvRecipesRecyclerList)
         recipesRecyclerView?.setHasFixedSize(true)
 
         // set layout manager

@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriblend.Model.Model
 import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.Modules.Recipes.Adapter.RecipesRecyclerAdapter
-import com.example.nutriblend.R
-import com.example.nutriblend.R.id.rvRecipesRecyclerList
+
+import com.example.nutriblend.databinding.FragmentRecipesBinding
 
 class RecipesFragment : Fragment() {
     var recipesRecyclerView: RecyclerView? = null
@@ -23,13 +23,17 @@ class RecipesFragment : Fragment() {
     var adapter: RecipesRecyclerAdapter? = null
     var progressBar: ProgressBar? = null
 
+    private var _binding:  FragmentRecipesBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentRecipesBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_recipes, container, false)
-        progressBar = view.findViewById(R.id.progressBar)
+        val view = binding.root // inflater.inflate(R.layout.fragment_recipes, container, false)
+        progressBar = binding.progressBar // view.findViewById(R.id.progressBar)
         progressBar?.visibility = View.VISIBLE
 
         Model.instance.getAllRecipes { recipes ->
@@ -40,7 +44,7 @@ class RecipesFragment : Fragment() {
             progressBar?.visibility = View.GONE
         }
 
-        recipesRecyclerView = view.findViewById(R.id.rvRecipesFragmentList)
+        recipesRecyclerView = binding.rvRecipesFragmentList // view.findViewById(R.id.rvRecipesFragmentList)
         recipesRecyclerView?.setHasFixedSize(true)
 
         // set layout manager
@@ -66,7 +70,7 @@ class RecipesFragment : Fragment() {
 
         recipesRecyclerView?.adapter = adapter
 
-        val addRecipeBtn: ImageButton = view.findViewById(R.id.iBtnRecipesFragmentAddRecipe)
+        val addRecipeBtn: ImageButton = binding.iBtnRecipesFragmentAddRecipe // view.findViewById(R.id.iBtnRecipesFragmentAddRecipe)
         val action = Navigation.createNavigateOnClickListener(RecipesFragmentDirections.actionGlobalAddRecipeFragment())
         addRecipeBtn.setOnClickListener(action)
 
@@ -86,6 +90,10 @@ class RecipesFragment : Fragment() {
             progressBar?.visibility = View.GONE
 
         }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
