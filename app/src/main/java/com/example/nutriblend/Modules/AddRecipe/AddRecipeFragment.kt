@@ -11,7 +11,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.navigation.Navigation
+import com.example.nutriblend.Model.Model
+import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.R
+import java.util.UUID
 
 class AddRecipeFragment : Fragment() {
     private var recipeTitleTextBox: EditText? = null
@@ -45,12 +48,20 @@ class AddRecipeFragment : Fragment() {
         cancelRecipeBtn?.setOnClickListener{
             Navigation.findNavController(it).popBackStack(R.id.recipesFragment, false)
         }
-        saveRecipeBtn?.setOnClickListener{onSaveRecipeClicked()}
-    }
-
-    private fun onSaveRecipeClicked() {
-        val recipeTitle = recipeTitleTextBox?.text.toString()
-        Toast.makeText(context, "recipe: $recipeTitle saved successfully", Toast.LENGTH_SHORT).show()
+        saveRecipeBtn?.setOnClickListener{
+            val recipeTitle = recipeTitleTextBox?.text.toString()
+            val recipeIngredients = recipeIngredientsTextBox?.text.toString()
+            val recipePreparationSteps = recipePreparationStepsTextBox?.text.toString()
+            // room:
+            // https://hdq-colman-ac.zoom.us/rec/play/ah5kO9PvbgA2ilgasF43s537N4c08fNStSd0EN-YF28wyWpXwfGIuOoQsMdGLnu-wDpQmgSHTmppAexd.lpBTPBH6GHvdOOpW
+            // 45319512
+            // 01:18:00
+            val recipe = Recipe(UUID.randomUUID().toString(),recipeTitle, recipeIngredients, recipePreparationSteps, "image.url", "ofirCohenUserId")
+            Model.instance.addRecipe(recipe){
+                Toast.makeText(context, "recipe: $recipeTitle saved successfully", Toast.LENGTH_SHORT).show()
+                Navigation.findNavController(it).popBackStack(R.id.recipesFragment, false)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

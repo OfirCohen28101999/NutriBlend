@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,11 +19,9 @@ import com.example.nutriblend.R.id.rvRecipesRecyclerList
 
 class RecipesFragment : Fragment() {
     var recipesRecyclerView: RecyclerView? = null
-    private var recipes: MutableList<Recipe>? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var recipes: List<Recipe>? = null
+    var adapter: RecipesRecyclerAdapter? = null
+    var progressBar: ProgressBar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,8 +29,17 @@ class RecipesFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_recipes, container, false)
+        progressBar = view.findViewById(R.id.progressBar)
+        progressBar?.visibility = View.VISIBLE
 
-        recipes = Model.instance.recipes
+        Model.instance.getAllRecipes { recipes ->
+            this.recipes = recipes
+            adapter?.recipes = recipes
+            adapter?.notifyDataSetChanged()
+
+            progressBar?.visibility = View.GONE
+        }
+
         recipesRecyclerView = view.findViewById(R.id.rvRecipesFragmentList)
         recipesRecyclerView?.setHasFixedSize(true)
 
@@ -41,8 +49,8 @@ class RecipesFragment : Fragment() {
         // set the adapter
         recipesRecyclerView?.adapter = RecipesRecyclerAdapter(recipes)
 
-        val adapter = RecipesRecyclerAdapter(recipes)
-        adapter.listener = object : RecipesRecyclerViewActivity.OnItemClickListener {
+        adapter = RecipesRecyclerAdapter(recipes)
+        adapter?.listener = object : RecipesRecyclerViewActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("TAG","RecipesRecyclerAdapter: POSITION CLICKED ${position}")
                 val recipe = recipes?.get(position)
@@ -60,9 +68,24 @@ class RecipesFragment : Fragment() {
 
         val addRecipeBtn: ImageButton = view.findViewById(R.id.iBtnRecipesFragmentAddRecipe)
         val action = Navigation.createNavigateOnClickListener(RecipesFragmentDirections.actionGlobalAddRecipeFragment())
-
-
         addRecipeBtn.setOnClickListener(action)
+
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        progressBar?.visibility = View.VISIBLE
+
+        Model.instance.getAllRecipes { recipes ->
+            this.recipes = recipes
+            adapter?.recipes = recipes
+            adapter?.notifyDataSetChanged()
+
+            progressBar?.visibility = View.GONE
+
+        }
+
     }
 }

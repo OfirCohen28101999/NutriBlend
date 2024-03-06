@@ -7,7 +7,7 @@ import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.Modules.Recipes.RecipesRecyclerViewActivity
 import com.example.nutriblend.R
 
-class RecipesRecyclerAdapter(var recipes: MutableList<Recipe>?): RecyclerView.Adapter<RecipeViewHolder>() {
+class RecipesRecyclerAdapter(var recipes: List<Recipe>?): RecyclerView.Adapter<RecipeViewHolder>() {
 
     var listener: RecipesRecyclerViewActivity.OnItemClickListener? = null
     override fun getItemCount(): Int = recipes?.size ?: 0

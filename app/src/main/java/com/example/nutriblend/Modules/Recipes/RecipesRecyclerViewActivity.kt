@@ -10,26 +10,32 @@ import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.Modules.Recipes.Adapter.RecipesRecyclerAdapter
 import com.example.nutriblend.R
 
+// not in use oops
+
 class RecipesRecyclerViewActivity : AppCompatActivity() {
     var recipesRecyclerView: RecyclerView? = null
-    private var recipes: MutableList<Recipe>? = null
+    private var recipes: List<Recipe>? = null
+    var adapter: RecipesRecyclerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipes_recycler_view)
 
-        recipes = Model.instance.recipes
+        adapter = RecipesRecyclerAdapter(recipes)
+
+        Model.instance.getAllRecipes { recipes ->
+            this.recipes = recipes
+            adapter?.recipes = recipes
+            adapter?.notifyDataSetChanged()
+        }
+
         recipesRecyclerView = findViewById(R.id.rvRecipesRecyclerList)
         recipesRecyclerView?.setHasFixedSize(true)
 
         // set layout manager
         recipesRecyclerView?.layoutManager = LinearLayoutManager(this)
 
-        // set the adapter
-        recipesRecyclerView?.adapter = RecipesRecyclerAdapter(recipes)
-
-        val adapter = RecipesRecyclerAdapter(recipes)
-        adapter.listener = object : OnItemClickListener {
+        adapter?.listener = object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("TAG","RecipesRecyclerAdapter: POSITION CLICKED ${position}")
             }
@@ -44,5 +50,16 @@ class RecipesRecyclerViewActivity : AppCompatActivity() {
     interface OnItemClickListener{
         fun onItemClick(position: Int) // Recipe
         fun onRecipeClicked(recipe: Recipe?)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Model.instance.getAllRecipes { recipes ->
+            this.recipes = recipes
+            adapter?.recipes = recipes
+            adapter?.notifyDataSetChanged()
+        }
+
     }
 }

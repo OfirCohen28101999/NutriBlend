@@ -15,21 +15,21 @@ import com.example.nutriblend.R
 
 class RecipesListActivity : AppCompatActivity() {
     private var recipesListView: ListView? = null
-    private var recipes: MutableList<Recipe>? = null
+    private var recipes: List<Recipe>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipes_list)
 
-        recipes = Model.instance.recipes
+        Model.instance.getAllRecipes { recipes ->
+            this.recipes = recipes
+        }
+
         recipesListView = findViewById(R.id.lvRecipesList)
         recipesListView?.adapter = RecipesListAdapter(recipes)
-
-        // https://hdq-colman-ac.zoom.us/rec/play/Qcu4lZoZWb3OykjU0NMQ1RuPelYAGv0_UTIy6fUEeeNvZITJzNbjIflAkcL80rB3fK6RJoQEe9QvSAA7.pZO8uPoIjRqi80H8
-        // 30503647 1:15:00
     }
 
-    class RecipesListAdapter(val recipes: MutableList<Recipe>?): BaseAdapter() {
+    class RecipesListAdapter(val recipes: List<Recipe>?): BaseAdapter() {
         override fun getCount(): Int = recipes?.size ?: 0
         override fun getItem(position: Int): Any {
             TODO("Not yet implemented")
