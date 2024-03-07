@@ -10,15 +10,13 @@ import com.example.nutriblend.Modules.Recipes.RecipesRecyclerViewActivity
 import com.example.nutriblend.R
 
 class RecipeViewHolder(val itemView: View, val listener: RecipesRecyclerViewActivity.OnItemClickListener?, var recipes: List<Recipe>?): RecyclerView.ViewHolder(itemView){
-    var nameTextView: TextView? = null
-    var idTextView: TextView? = null
+    var recipeTitleTextView: TextView? = null
     var recipeCheckbox: CheckBox? = null
     var recipe: Recipe? = null
 
     init {
-        nameTextView = itemView.findViewById(R.id.tvStudentListRowName)
-        idTextView = itemView.findViewById(R.id.tvStudentListRowID)
-        recipeCheckbox = itemView.findViewById(R.id.cbStudentListRow)
+        recipeTitleTextView = itemView.findViewById(R.id.tvRecipeListRowTitle)
+        recipeCheckbox = itemView.findViewById(R.id.cbRecipeListRow)
 
         recipeCheckbox?.setOnClickListener{
             val recipe = recipes?.get(adapterPosition)
@@ -35,8 +33,7 @@ class RecipeViewHolder(val itemView: View, val listener: RecipesRecyclerViewActi
 
     fun bind(recipe: Recipe?) {
         this.recipe = recipe
-        nameTextView?.text = recipe?.title
-        idTextView?.text = recipe?.id
+        recipeTitleTextView?.text = recipe?.title
         recipeCheckbox?.apply {
             isChecked = recipe?.isChecked ?: false
         }

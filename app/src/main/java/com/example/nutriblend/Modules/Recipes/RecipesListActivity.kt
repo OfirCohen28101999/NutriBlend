@@ -45,7 +45,7 @@ class RecipesListActivity : AppCompatActivity() {
 
             if(convertView == null){
                 view = LayoutInflater.from(parent?.context).inflate(R.layout.recipe_layout_row,parent,false)
-                val recipeCheckbox: CheckBox? = view?.findViewById(R.id.cbStudentListRow)
+                val recipeCheckbox: CheckBox? = view?.findViewById(R.id.cbRecipeListRow)
                 recipeCheckbox?.setOnClickListener{
                     (recipeCheckbox?.tag as? Int)?.let {tag ->
                         val recipe = recipes?.get(tag)
@@ -56,12 +56,10 @@ class RecipesListActivity : AppCompatActivity() {
 
             view = view ?: convertView
 
-            val nameTextView: TextView? = view?.findViewById(R.id.tvStudentListRowName)
-            val idTextView: TextView? = view?.findViewById(R.id.tvStudentListRowID)
-            val recipeCheckbox: CheckBox? = view?.findViewById(R.id.cbStudentListRow)
+            val recipeTitleTextView: TextView? = view?.findViewById(R.id.tvRecipeListRowTitle)
+            val recipeCheckbox: CheckBox? = view?.findViewById(R.id.cbRecipeListRow)
 
-            nameTextView?.text = recipe?.title
-            idTextView?.text = recipe?.id
+            recipeTitleTextView?.text = recipe?.title
             recipeCheckbox?.apply {
                 isChecked = recipe?.isChecked ?: false
                 tag = position
