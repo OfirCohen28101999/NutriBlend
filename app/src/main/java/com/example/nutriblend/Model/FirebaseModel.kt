@@ -1,6 +1,7 @@
 package com.example.nutriblend.Model
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.memoryCacheSettings
@@ -20,8 +21,10 @@ class FirebaseModel {
         db.firestoreSettings = settings
     }
 
-    fun getAllRecipes(callback: (List<Recipe>) -> Unit) {
-        db.collection(RECIPES_COLLECTION_PATH).get().addOnCompleteListener{
+    fun getAllRecipes(since: Long, callback: (List<Recipe>) -> Unit) {
+        db.collection(RECIPES_COLLECTION_PATH)
+            .whereGreaterThanOrEqualTo(Recipe.LAST_UPDATED_KEY, Timestamp(since, 0))
+            .get().addOnCompleteListener{
             when (it.isSuccessful) {
                 true -> {
                     val recipes: MutableList<Recipe> = mutableListOf()

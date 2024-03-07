@@ -1,16 +1,19 @@
 package com.example.nutriblend.Model
 
+import android.content.Context
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.nutriblend.base.MyApplication
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
 @Entity
-data class  Recipe(@PrimaryKey val id: String,
-                   val title: String,
-                   val ingredients: String,
-                   val preparationSteps: String,
-                   val imageUrl: String,
+data class Recipe(@PrimaryKey var id: String,
+                   var title: String,
+                   var ingredients: String,
+                   var preparationSteps: String,
+                   var imageUrl: String,
                    var creatingUserId: String,
                    var lastUpdated: Long? = null,
                    var isChecked: Boolean? = false,
@@ -27,6 +30,20 @@ data class  Recipe(@PrimaryKey val id: String,
 ) {
 
     companion object {
+
+        var lastUpdated: Long
+            get() {
+                return MyApplication.Globals.appContext?.getSharedPreferences("TAG", Context.MODE_PRIVATE)?.getLong(
+                    GET_LAST_UPDATED, 0) ?: 0
+            }
+            set(value) {
+                MyApplication.Globals?.appContext?.getSharedPreferences("TAG", Context.MODE_PRIVATE)?.edit()?.putLong(
+                    GET_LAST_UPDATED, value)?.apply()
+            }
+
+        const val GET_LAST_UPDATED = "get_last_updated"
+
+        // properties
         const val TITLE_KEY = "title"
         const val INGREDIENTS_KEY = "ingredients"
         const val PREPARATION_STEPS_KEY = "preparationSteps"
@@ -53,6 +70,8 @@ data class  Recipe(@PrimaryKey val id: String,
             val imageUrl = json[IMAGE_URL_KEY] as? String ? ?: ""
             val creatingUserId = json[CREATING_USER_ID_KEY] as? String ? ?: ""
             val isChecked = json[IS_CHECKED_KEY] as? Boolean ?: false
+
+            // TODO: beware
             val lastUpdated: Long? = (json[LAST_UPDATED_KEY] as? Timestamp)?.seconds ?: 0
             val calories = json[CALORIES_KEY] as? Double ?: 0.00
             val fat_total_g = json[FAT_TOTAL_KEY] as? Double  ?: 0.00
@@ -64,7 +83,6 @@ data class  Recipe(@PrimaryKey val id: String,
             val carbohydrates_total_g = json[CARBOHYDRATES_KEY] as? Double ?: 0.00
             val fiber_g = json[FIBER_KEY] as? Double ?: 0.00
             val sugar_g = json[SUGAR_KEY] as? Double ?: 0.00
-
 
             val recipe = Recipe(
                 id,
@@ -92,24 +110,24 @@ data class  Recipe(@PrimaryKey val id: String,
 
     val json: HashMap<String, Any?>
         get() {
-        return hashMapOf(
-                "title" to title,
-                "ingredients" to ingredients,
-                "preparationSteps" to preparationSteps,
-                "imageUrl" to imageUrl,
-                "creatingUserId" to creatingUserId,
-                "isChecked" to isChecked,
-                "lastUpdated" to lastUpdated,
-                "calories" to calories,
-                "fat_total_g" to fat_total_g,
-                "fat_saturated_g" to fat_saturated_g,
-                "protein_g" to protein_g,
-                "sodium_mg" to sodium_mg,
-                "potassium_mg" to potassium_mg,
-                "cholesterol_mg" to cholesterol_mg,
-                "carbohydrates_total_g" to carbohydrates_total_g,
-                "fiber_g" to fiber_g,
-                "sugar_g" to sugar_g
-        )
+            return hashMapOf(
+                    TITLE_KEY to title,
+                    INGREDIENTS_KEY to ingredients,
+                    PREPARATION_STEPS_KEY to preparationSteps,
+                    IMAGE_URL_KEY to imageUrl,
+                    CREATING_USER_ID_KEY to creatingUserId,
+                    IS_CHECKED_KEY to isChecked,
+                    LAST_UPDATED_KEY to FieldValue.serverTimestamp(),
+                    CALORIES_KEY to calories,
+                    FAT_TOTAL_KEY to fat_total_g,
+                    FAT_SATURATED_KEY to fat_saturated_g,
+                    PROTEIN_KEY to protein_g,
+                    SODIUM_KEY to sodium_mg,
+                    POTASSIUM_KEY to potassium_mg,
+                    CHOLESTEROL_KEY to cholesterol_mg,
+                    CARBOHYDRATES_KEY to carbohydrates_total_g,
+                    FIBER_KEY to fiber_g,
+                    SUGAR_KEY to sugar_g
+            )
     }
 }

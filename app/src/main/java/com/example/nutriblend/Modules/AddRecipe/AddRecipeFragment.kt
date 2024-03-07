@@ -52,11 +52,15 @@ class AddRecipeFragment : Fragment() {
             val recipeTitle = recipeTitleTextBox?.text.toString()
             val recipeIngredients = recipeIngredientsTextBox?.text.toString()
             val recipePreparationSteps = recipePreparationStepsTextBox?.text.toString()
-            // room:
-            // https://hdq-colman-ac.zoom.us/rec/play/ah5kO9PvbgA2ilgasF43s537N4c08fNStSd0EN-YF28wyWpXwfGIuOoQsMdGLnu-wDpQmgSHTmppAexd.lpBTPBH6GHvdOOpW
-            // 45319512
-            // 01:18:00
-            val recipe = Recipe(UUID.randomUUID().toString(),recipeTitle, recipeIngredients, recipePreparationSteps, "image.url", "ofirCohenUserId")
+
+            val recipe = Recipe(
+                UUID.randomUUID().toString(),
+                recipeTitle,
+                recipeIngredients,
+                recipePreparationSteps,
+                "image.url",
+                "ofirCohenUserId")
+
             Model.instance.addRecipe(recipe){
                 Toast.makeText(context, "recipe: $recipeTitle saved successfully", Toast.LENGTH_SHORT).show()
                 Navigation.findNavController(it).popBackStack(R.id.recipesFragment, false)

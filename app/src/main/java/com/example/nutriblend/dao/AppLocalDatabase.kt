@@ -6,13 +6,12 @@ import androidx.room.RoomDatabase
 import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.base.MyApplication
 
-@Database(entities = [Recipe::class], version = 2)
+@Database(entities = [Recipe::class], version = 3)
 abstract class AppLocalDbRepository : RoomDatabase() {
     abstract fun RecipeDao(): RecipeDao
 }
 
 object AppLocalDatabase {
-
     val db: AppLocalDbRepository by lazy {
 
         val context = MyApplication.Globals.appContext ?: throw IllegalStateException("app context not available")
@@ -21,5 +20,4 @@ object AppLocalDatabase {
             .fallbackToDestructiveMigration()
             .build()
     }
-
 }
