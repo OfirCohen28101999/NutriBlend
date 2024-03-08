@@ -51,7 +51,8 @@ class RecipesFragment : Fragment() {
         recipesRecyclerView?.adapter = RecipesRecyclerAdapter(viewModel.recipes?.value)
 
         adapter = RecipesRecyclerAdapter(viewModel.recipes?.value)
-        adapter?.listener = object : RecipesRecyclerViewActivity.OnItemClickListener {
+
+        adapter?.listener = object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("TAG","RecipesRecyclerAdapter: POSITION CLICKED ${position}")
                 val recipe = viewModel.recipes?.value?.get(position)
@@ -101,4 +102,9 @@ class RecipesFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+}
+
+interface OnItemClickListener{
+    fun onItemClick(position: Int) // Recipe
+    fun onRecipeClicked(recipe: Recipe?)
 }

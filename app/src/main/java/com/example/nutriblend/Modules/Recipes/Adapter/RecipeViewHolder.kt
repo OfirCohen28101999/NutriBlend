@@ -6,10 +6,10 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriblend.Model.Recipe
-import com.example.nutriblend.Modules.Recipes.RecipesRecyclerViewActivity
+import com.example.nutriblend.Modules.Recipes.OnItemClickListener
 import com.example.nutriblend.R
 
-class RecipeViewHolder(val itemView: View, val listener: RecipesRecyclerViewActivity.OnItemClickListener?, var recipes: List<Recipe>?): RecyclerView.ViewHolder(itemView){
+class RecipeViewHolder(val itemView: View, val listener: OnItemClickListener?, var recipes: List<Recipe>?): RecyclerView.ViewHolder(itemView){
     var recipeTitleTextView: TextView? = null
     var recipeCheckbox: CheckBox? = null
     var recipe: Recipe? = null
