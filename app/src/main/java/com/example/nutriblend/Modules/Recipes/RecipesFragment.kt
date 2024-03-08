@@ -76,6 +76,15 @@ class RecipesFragment : Fragment() {
             adapter?.notifyDataSetChanged()
             progressBar?.visibility = View.GONE
         }
+
+        binding.pullToRefresh.setOnRefreshListener {
+            reloadRecipes()
+        }
+
+        Model.instance.recipesListLoadingState.observe(viewLifecycleOwner) { state ->
+            binding.pullToRefresh.isRefreshing = state == Model.LoadingState.LOADING
+        }
+
         return view
     }
 
