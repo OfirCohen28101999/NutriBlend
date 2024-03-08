@@ -1,5 +1,6 @@
 package com.example.nutriblend.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -10,7 +11,7 @@ import com.example.nutriblend.Model.Recipe
 @Dao
 interface RecipeDao {
     @Query("SELECT * FROM Recipe")
-    fun getAll(): List<Recipe>
+    fun getAll(): LiveData<MutableList<Recipe>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg recipes: Recipe)
@@ -19,5 +20,5 @@ interface RecipeDao {
     fun delete(recipe: Recipe)
 
     @Query("SELECT * FROM RECIPE WHERE id=:id")
-    fun getRecipeById(id: String): Recipe
+    fun getRecipeById(id: String): LiveData<Recipe>
 }

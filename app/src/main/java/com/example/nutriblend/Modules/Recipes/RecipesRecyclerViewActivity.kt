@@ -28,11 +28,11 @@ class RecipesRecyclerViewActivity : AppCompatActivity() {
 
         adapter = RecipesRecyclerAdapter(recipes)
 
-        Model.instance.getAllRecipes { recipes ->
-            this.recipes = recipes
-            adapter?.recipes = recipes
-            adapter?.notifyDataSetChanged()
-        }
+//        Model.instance.refreshAllRecipes { recipes ->
+//            this.recipes = recipes
+//            adapter?.recipes = recipes
+//            adapter?.notifyDataSetChanged()
+//        }
 
         recipesRecyclerView =  binding.rvRecipesRecyclerList // findViewById(R.id.rvRecipesRecyclerList)
         recipesRecyclerView?.setHasFixedSize(true)
@@ -60,11 +60,11 @@ class RecipesRecyclerViewActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        Model.instance.getAllRecipes { recipes ->
-            this.recipes = recipes
-            adapter?.recipes = recipes
-            adapter?.notifyDataSetChanged()
-        }
+//        Model.instance.refreshAllRecipes { recipes ->
+//            this.recipes = recipes
+//            adapter?.recipes = recipes
+//            adapter?.notifyDataSetChanged()
+//        }
 
     }
 }

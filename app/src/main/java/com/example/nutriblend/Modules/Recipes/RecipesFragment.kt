@@ -39,13 +39,7 @@ class RecipesFragment : Fragment() {
         progressBar = binding.progressBar // view.findViewById(R.id.progressBar)
         progressBar?.visibility = View.VISIBLE
 
-        Model.instance.getAllRecipes { recipes ->
-            viewModel.recipes = recipes
-            adapter?.recipes = recipes
-            adapter?.notifyDataSetChanged()
-
-            progressBar?.visibility = View.GONE
-        }
+        viewModel.recipes = Model.instance.getAllRecipes()
 
         recipesRecyclerView = binding.rvRecipesFragmentList // view.findViewById(R.id.rvRecipesFragmentList)
         recipesRecyclerView?.setHasFixedSize(true)
@@ -54,13 +48,13 @@ class RecipesFragment : Fragment() {
         recipesRecyclerView?.layoutManager = LinearLayoutManager(context)
 
         // set the adapter
-        recipesRecyclerView?.adapter = RecipesRecyclerAdapter(viewModel.recipes)
+        recipesRecyclerView?.adapter = RecipesRecyclerAdapter(viewModel.recipes?.value)
 
-        adapter = RecipesRecyclerAdapter(viewModel.recipes)
+        adapter = RecipesRecyclerAdapter(viewModel.recipes?.value)
         adapter?.listener = object : RecipesRecyclerViewActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("TAG","RecipesRecyclerAdapter: POSITION CLICKED ${position}")
-                val recipe = viewModel.recipes?.get(position)
+                val recipe = viewModel.recipes?.value?.get(position)
                 recipe?.let {
                     val action = RecipesFragmentDirections.actionRecipesFragmentToBlueFragment().setTitleArgBlueFragment(it.title)
                     Navigation.findNavController(view).navigate(action)
@@ -77,24 +71,23 @@ class RecipesFragment : Fragment() {
         val action = Navigation.createNavigateOnClickListener(RecipesFragmentDirections.actionGlobalAddRecipeFragment())
         addRecipeBtn.setOnClickListener(action)
 
+        viewModel.recipes?.observe(viewLifecycleOwner) {
+            adapter?.recipes = it
+            adapter?.notifyDataSetChanged()
+            progressBar?.visibility = View.GONE
+        }
         return view
     }
 
     override fun onResume() {
         super.onResume()
-
-        progressBar?.visibility = View.VISIBLE
-
-        Model.instance.getAllRecipes { recipes ->
-            viewModel.recipes = recipes
-            adapter?.recipes = recipes
-            adapter?.notifyDataSetChanged()
-
-            progressBar?.visibility = View.GONE
-
-        }
+        reloadRecipes()
     }
-
+    fun reloadRecipes() {
+        progressBar?.visibility = View.VISIBLE
+        Model.instance.refreshAllRecipes()
+        progressBar?.visibility = View.GONE
+    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

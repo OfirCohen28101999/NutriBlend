@@ -3,15 +3,16 @@ package com.example.nutriblend.Model
 import android.os.Looper
 import android.util.Log
 import androidx.core.os.HandlerCompat
+import androidx.lifecycle.LiveData
 import com.example.nutriblend.dao.AppLocalDatabase
 import java.util.concurrent.Executors
 
 class Model private constructor(){
-    // TODO: local cache still needs to be implemented with room
     private val database = AppLocalDatabase.db
     private var executor = Executors.newSingleThreadExecutor()
     private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
     private val firebaseModel = FirebaseModel()
+    private val recipes: LiveData<MutableList<Recipe>>? = null
 
     companion object {
         val instance: Model = Model()
@@ -20,7 +21,11 @@ class Model private constructor(){
         fun onComplete(recipes: List<Recipe>)
     }
 
-    fun getAllRecipes(callback: (List<Recipe>) -> Unit) {
+    fun getAllRecipes(): LiveData<MutableList<Recipe>> {
+        refreshAllRecipes()
+        return recipes ?: database.RecipeDao().getAll()
+    }
+    fun refreshAllRecipes() {
         // 1. get last local update
         val lastUpdated: Long = Recipe.lastUpdated
 
@@ -43,22 +48,14 @@ class Model private constructor(){
 
                 // 4. update local data
                 Recipe.lastUpdated = time
-
-                // 5. return complete list from room - we fetch data only from room we will fetch updates from fs to room
-                val recipes = database.RecipeDao().getAll()
-
-                mainHandler.post {
-                    callback(recipes)
-                }
             }
         }
     }
 
     fun addRecipe(recipe: Recipe, callback: () -> Unit) {
-        firebaseModel.addRecipe(recipe, callback)
+        firebaseModel.addRecipe(recipe) {
+            refreshAllRecipes()
+            callback()
+        }
     }
 }
-
-
-
-/// https://moodle.colman.ac.il/mod/zoom/loadrecording.php?id=18636&recordingid=21129 01:10:00 40825814

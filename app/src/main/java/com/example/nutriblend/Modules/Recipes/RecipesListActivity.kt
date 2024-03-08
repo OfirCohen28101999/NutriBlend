@@ -21,9 +21,9 @@ class RecipesListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipes_list)
 
-        Model.instance.getAllRecipes { recipes ->
-            this.recipes = recipes
-        }
+//        Model.instance.refreshAllRecipes { recipes ->
+//            this.recipes = recipes
+//        }
 
         recipesListView = findViewById(R.id.lvRecipesList)
         recipesListView?.adapter = RecipesListAdapter(recipes)
