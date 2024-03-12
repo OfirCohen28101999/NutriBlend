@@ -71,4 +71,12 @@ class Model private constructor(){
             callback()
         }
     }
+
+    fun signupNewUser(user: User, callback: () -> Unit) {
+        Log.i("TAG", "reached user: ${user}")
+
+        firebaseModel.signupNewUser(user) {
+            callback()
+        }
+    }
 }

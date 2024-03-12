@@ -1,6 +1,5 @@
 package com.example.nutriblend.Model
 
-import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
@@ -11,6 +10,7 @@ class FirebaseModel {
 
     companion object {
         const val RECIPES_COLLECTION_PATH: String = "recipes"
+        const val USERS_COLLECTION_PATH: String = "users"
     }
     init {
         val settings = firestoreSettings {
@@ -41,6 +41,14 @@ class FirebaseModel {
     fun addRecipe(recipe: Recipe, callback: () -> Unit) {
         db.collection(RECIPES_COLLECTION_PATH)
             .add(recipe.json)
+            .addOnSuccessListener { documentReference ->
+                callback()
+            }
+    }
+
+    fun signupNewUser(user: User, callback: () -> Unit) {
+        db.collection(USERS_COLLECTION_PATH)
+            .add(user.json)
             .addOnSuccessListener { documentReference ->
                 callback()
             }

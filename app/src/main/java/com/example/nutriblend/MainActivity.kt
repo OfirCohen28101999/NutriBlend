@@ -1,16 +1,18 @@
 package com.example.nutriblend
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
+    private var auth = FirebaseAuth.getInstance()
     var navController: NavController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,12 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.mainActivityBottomNavigationView)
         navController?.let {
             NavigationUI.setupWithNavController(bottomNavigationView,it)
+        }
+
+        if (auth.currentUser == null) {
+            val intent = Intent(this, SigninActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

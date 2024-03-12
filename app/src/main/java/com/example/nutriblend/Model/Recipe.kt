@@ -65,16 +65,16 @@ data class Recipe(@PrimaryKey var id: String,
         fun fromJson(json: QueryDocumentSnapshot): Recipe {
             val id = json.id
             val title = json[TITLE_KEY] as? String ?: ""
-            val ingredients = json[INGREDIENTS_KEY] as? String ? ?: ""
-            val preparationSteps = json[PREPARATION_STEPS_KEY] as? String ? ?: ""
-            val imageUrl = json[IMAGE_URL_KEY] as? String ? ?: ""
-            val creatingUserId = json[CREATING_USER_ID_KEY] as? String ? ?: ""
+            val ingredients = json[INGREDIENTS_KEY] as? String? ?: ""
+            val preparationSteps = json[PREPARATION_STEPS_KEY] as? String? ?: ""
+            val imageUrl = json[IMAGE_URL_KEY] as? String? ?: ""
+            val creatingUserId = json[CREATING_USER_ID_KEY] as? String? ?: ""
             val isChecked = json[IS_CHECKED_KEY] as? Boolean ?: false
 
             // TODO: beware
             val lastUpdated: Long? = (json[LAST_UPDATED_KEY] as? Timestamp)?.seconds ?: 0
             val calories = json[CALORIES_KEY] as? Double ?: 0.00
-            val fat_total_g = json[FAT_TOTAL_KEY] as? Double  ?: 0.00
+            val fat_total_g = json[FAT_TOTAL_KEY] as? Double ?: 0.00
             val fat_saturated_g = json[FAT_SATURATED_KEY] as? Double ?: 0.00
             val protein_g = json[PROTEIN_KEY] as? Double ?: 0.00
             val sodium_mg = json[SODIUM_KEY] as? Double ?: 0.00
@@ -84,7 +84,7 @@ data class Recipe(@PrimaryKey var id: String,
             val fiber_g = json[FIBER_KEY] as? Double ?: 0.00
             val sugar_g = json[SUGAR_KEY] as? Double ?: 0.00
 
-            val recipe = Recipe(
+            return Recipe(
                 id,
                 title,
                 ingredients,
@@ -102,9 +102,8 @@ data class Recipe(@PrimaryKey var id: String,
                 cholesterol_mg,
                 carbohydrates_total_g,
                 fiber_g,
-                sugar_g)
-
-            return recipe
+                sugar_g
+            )
         }
     }
 

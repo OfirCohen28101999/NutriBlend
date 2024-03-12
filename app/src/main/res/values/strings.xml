@@ -11,4 +11,13 @@
     <string name="recipe_cancel_recipe_btn_text">Cancel</string>
     <string name="recipe_save_recipe_btn_text">Save</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signup_invitation">Wanna start cooking? Sign up!</string>
+    <string name="signin">Sign In</string>
+    <string name="signup">Sign Up</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="signin_invitation">Already have an account? Sign In!</string>
 </resources>
