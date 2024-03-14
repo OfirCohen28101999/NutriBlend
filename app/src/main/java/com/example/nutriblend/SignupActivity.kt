@@ -17,7 +17,16 @@ import com.example.nutriblend.Modules.Auth.SignupViewModel
 class SignupActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SignupViewModel
+
     private lateinit var userImageView: ImageView
+    private lateinit var signUpButton: Button
+    private lateinit var signInButton: Button
+    private lateinit var userNameEditText: EditText
+    private lateinit var firstNameEditText: EditText
+    private lateinit var lastNameEditText: EditText
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+
     private var selectedImageUri: Uri? = null
 
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -34,18 +43,39 @@ class SignupActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[SignupViewModel::class.java]
 
-        val signUpButton: Button = findViewById(R.id.signupActivitySignupBtn)
+        bindElements()
+        initListeners()
+        initObservers()
+    }
+
+    private fun bindElements() {
+        userImageView = findViewById(R.id.userImageView)
+        signUpButton = findViewById(R.id.signupActivitySignupBtn)
+        signInButton = findViewById(R.id.signupActivitysigninBtn)
+        userNameEditText = findViewById(R.id.usernameEditText)
+        firstNameEditText = findViewById(R.id.firstNameEditText)
+        lastNameEditText = findViewById(R.id.lastNameEditText)
+        emailEditText = findViewById(R.id.emailEditText)
+        passwordEditText = findViewById(R.id.signUpPasswordEditText)
+    }
+
+    private fun initListeners() {
         signUpButton.setOnClickListener {
             signupUser()
         }
 
-        val signinButton = findViewById<Button>(R.id.signupActivitysigninBtn)
-        signinButton.setOnClickListener {
+        signInButton.setOnClickListener {
             startActivity(Intent(this, SigninActivity::class.java))
         }
 
-        setImage()
+        userImageView.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            getContent.launch(intent)
+        }
+    }
 
+    private fun initObservers(){
         viewModel.signupSuccess.observe(this) { isSuccess ->
             if (isSuccess) {
                 val intent = Intent(this, MainActivity::class.java)
@@ -58,49 +88,16 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun signupUser() {
-        val userNameEditText: EditText = findViewById(R.id.usernameEditText)
-        val firstNameEditText: EditText = findViewById(R.id.firstNameEditText)
-        val lastNameEditText: EditText = findViewById(R.id.lastNameEditText)
-        val emailEditText: EditText = findViewById(R.id.emailEditText)
-        val passwordEditText: EditText = findViewById(R.id.signUpPasswordEditText)
-
         val userName: String = userNameEditText.text.toString()
         val firstName: String = firstNameEditText.text.toString()
         val lastName: String = lastNameEditText.text.toString()
         val email: String = emailEditText.text.toString()
         val password: String = passwordEditText.text.toString()
 
-        if (isEmailValid(email) && isPasswordValid(password)) {
+        if (Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length >= 8) {
             viewModel.signupUser(userName, firstName, lastName, email, password, selectedImageUri)
-        }
-    }
-
-    private fun isEmailValid(email: String): Boolean {
-        val isEmailPattern = Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
-        if (!isEmailPattern) {
-            Toast.makeText(baseContext, "Email not valid", Toast.LENGTH_SHORT).show()
-        }
-
-        return isEmailPattern
-    }
-
-    private fun isPasswordValid(password: String): Boolean {
-        val isPasswordPattern = password.length >= 6
-
-        if (!isPasswordPattern) {
-            Toast.makeText(baseContext, "Password must be more then 6 characters", Toast.LENGTH_SHORT).show()
-        }
-
-        return isPasswordPattern
-    }
-
-    private fun setImage() {
-        userImageView = findViewById(R.id.userImageView)
-        userImageView.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            getContent.launch(intent)
+        } else {
+            Toast.makeText(baseContext, "Password must be more then 6 characters/Email not valid", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -33,6 +33,10 @@ class Model private constructor(){
         refreshAllRecipes()
         return recipes ?: database.RecipeDao().getAll()
     }
+
+    fun getRecipeById(recipeId: String): LiveData<Recipe?> {
+        return database.RecipeDao().getRecipeById(recipeId)
+    }
     fun refreshAllRecipes() {
 
         recipesListLoadingState.value = LoadingState.LOADING
@@ -67,6 +71,34 @@ class Model private constructor(){
 
     fun addRecipe(recipe: Recipe, callback: () -> Unit) {
         firebaseModel.addRecipe(recipe) {
+            refreshAllRecipes()
+            callback()
+        }
+    }
+
+    fun updateRecipe(recipe: Recipe, callback: () -> Unit) {
+        firebaseModel.updateRecipe(recipe) {
+                recipesListLoadingState.value = LoadingState.LOADING
+
+                executor.execute {
+                    database.RecipeDao().insert(recipe)
+                    recipesListLoadingState.postValue(LoadingState.LOADED)
+                }
+
+                refreshAllRecipes()
+                callback()
+            }
+        }
+    fun deleteRecipe(recipe: Recipe, callback: () -> Unit) {
+        firebaseModel.deleteRecipe(recipe.id) {
+
+            recipesListLoadingState.value = LoadingState.LOADING
+
+            executor.execute {
+                database.RecipeDao().delete(recipe)
+                recipesListLoadingState.postValue(LoadingState.LOADED)
+            }
+
             refreshAllRecipes()
             callback()
         }

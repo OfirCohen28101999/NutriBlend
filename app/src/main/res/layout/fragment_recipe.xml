@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Modules.Recipe.RecipeFragment">
+
+    <ImageView
+        android:id="@+id/recipeImageFragmentRecipe"
+        android:layout_width="121dp"
+        android:layout_height="105dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="@string/recipe_image"
+        android:scaleType="centerInside"
+        android:src="@drawable/meal"
+        app:layout_constraintEnd_toStartOf="@+id/recipeTitleTextviewFragmentRecipe"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/recipeTitleTextviewFragmentRecipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/recipe_title_textview"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/recipeTitleTextBoxFragmentRecipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recipeImageFragmentRecipe"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/recipeIngredientsTextviewFragmentRecipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/recipe_ingredients_textview"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/recipeIngredientsTextBoxFragmentRecipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeImageFragmentRecipe"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipeStepsTextviewFragmentRecipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/recipe_preparation_steps_textview"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/recipePreparationStepsTextBoxFragmentRecipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeIngredientsTextBoxFragmentRecipe"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/recipeTitleTextBoxFragmentRecipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/recipeIngredientsTextviewFragmentRecipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recipeImageFragmentRecipe"
+        app:layout_constraintTop_toBottomOf="@+id/recipeTitleTextviewFragmentRecipe"
+        tools:ignore="LabelFor" />
+
+    <EditText
+        android:id="@+id/recipeIngredientsTextBoxFragmentRecipe"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:gravity="start"
+        android:selectAllOnFocus="false"
+        android:singleLine="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toTopOf="@+id/recipeStepsTextviewFragmentRecipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeIngredientsTextviewFragmentRecipe"
+        tools:ignore="LabelFor"
+        android:inputType="textMultiLine"
+        android:minLines="3"/>
+
+    <EditText
+        android:id="@+id/recipePreparationStepsTextBoxFragmentRecipe"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:freezesText="false"
+        android:gravity="start"
+        android:singleLine="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toTopOf="@+id/recipeCaloriesTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeStepsTextviewFragmentRecipe"
+        tools:ignore="LabelFor"
+        android:inputType="textMultiLine"
+        android:minLines="3"/>
+
+    <TextView
+        android:id="@+id/recipeCaloriesTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/calories"
+        app:layout_constraintBottom_toTopOf="@+id/recipeTotalFatTextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipePreparationStepsTextBoxFragmentRecipe"
+        app:layout_constraintVertical_bias="1.0"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipeTotalFatTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/total_fat_g"
+        app:layout_constraintBottom_toTopOf="@+id/recipeSaturatedFatTextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeCaloriesTextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipeSaturatedFatTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/saturated_fat_g"
+        app:layout_constraintBottom_toTopOf="@+id/recipeProteinTextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeTotalFatTextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipeProteinTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/protein_g"
+        app:layout_constraintBottom_toTopOf="@+id/recipeSodiumTextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeSaturatedFatTextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipeSodiumTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/sodium_mg"
+        app:layout_constraintBottom_toTopOf="@+id/recipePotassiumTextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeProteinTextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipePotassiumTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/potassium_mg"
+        app:layout_constraintBottom_toTopOf="@+id/recipeCarbohydratesTextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeSodiumTextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipeCholesterolTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/cholesterol_mg"
+        app:layout_constraintBottom_toTopOf="@+id/recipeSugarTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeCarbohydratesTextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipeCarbohydratesTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/carbohydrates_g"
+        app:layout_constraintBottom_toTopOf="@+id/recipeCholesterolTextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipePotassiumTextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipeFiberTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/fiber_g"
+        app:layout_constraintBottom_toTopOf="@+id/saveRecipeBtnFragmentRecipe"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeSugarTextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/recipeSugarTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/sugar_g"
+        app:layout_constraintBottom_toTopOf="@+id/recipeFiberTextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeCholesterolTextView"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/saveRecipeBtnFragmentRecipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deleteRecipeBtnFragmentRecipe"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/deleteRecipeBtnFragmentRecipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/saveRecipeBtnFragmentRecipe" />
+
+    <TextView
+        android:id="@+id/caloriesValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toTopOf="@+id/totalFatValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/recipePreparationStepsTextBoxFragmentRecipe" />
+
+    <TextView
+        android:id="@+id/totalFatValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toTopOf="@+id/satFatValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/caloriesValueTextView" />
+
+    <TextView
+        android:id="@+id/satFatValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toTopOf="@+id/proteinValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/totalFatValueTextView" />
+
+    <TextView
+        android:id="@+id/proteinValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toTopOf="@+id/sodiumValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/satFatValueTextView" />
+
+    <TextView
+        android:id="@+id/sodiumValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toTopOf="@+id/potassiumValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/proteinValueTextView" />
+
+    <TextView
+        android:id="@+id/potassiumValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toBottomOf="@+id/carboValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/sodiumValueTextView" />
+
+    <TextView
+        android:id="@+id/carboValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toTopOf="@+id/cholesterolValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/potassiumValueTextView" />
+
+    <TextView
+        android:id="@+id/cholesterolValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toTopOf="@+id/sugarValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/carboValueTextView" />
+
+    <TextView
+        android:id="@+id/sugarValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toTopOf="@+id/fiberValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/cholesterolValueTextView" />
+
+    <TextView
+        android:id="@+id/fiberValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/empty_nutritional_value"
+        app:layout_constraintBottom_toTopOf="@+id/saveRecipeBtnFragmentRecipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/sugarValueTextView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginBottom="819dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/saveRecipeBtnFragmentRecipe"
+        app:layout_constraintGuide_end="286dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipePreparationStepsTextBoxFragmentRecipe"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarRecipeFragment"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,12 +2,12 @@
     <string name="app_name">NutriBlend</string>
     <string name="add_recipe">add new recipe</string>
     <string name="recipe_image">recipe image</string>
-    <string name="recipe_title_textview">recipe title</string>
+    <string name="recipe_title_textview">title</string>
     <string name="recipe_ingredients_textview">ingredients</string>
     <string name="recipe_preparation_steps_textview">preparation steps</string>
-    <string name="recipe_title_textBox">recipe title</string>
-    <string name="recipe_ingredients_textbox">recipe ingredients</string>
-    <string name="recipe_preparation_steps_textbox">recipe preparation steps</string>
+    <string name="recipe_title_textBox">what\'s cooking? </string>
+    <string name="recipe_ingredients_textbox">what\'s inside?</string>
+    <string name="recipe_preparation_steps_textbox">how\'d you make it?</string>
     <string name="recipe_cancel_recipe_btn_text">Cancel</string>
     <string name="recipe_save_recipe_btn_text">Save</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -20,4 +20,18 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="signin_invitation">Already have an account? Sign In!</string>
+    <string name="sugar_g">sugar(g)</string>
+    <string name="fiber_g">fiber(g)</string>
+    <string name="carbohydrates_g">carbohydrates(g)</string>
+    <string name="cholesterol_mg">cholesterol(mg)</string>
+    <string name="potassium_mg">potassium(mg)</string>
+    <string name="sodium_mg">sodium(mg)</string>
+    <string name="protein_g">protein(g)</string>
+    <string name="saturated_fat_g">saturated fat(g)</string>
+    <string name="total_fat_g">total fat(g)</string>
+    <string name="calories">calories</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="empty_nutritional_value">0.000</string>
+    <string name="delete">Delete</string>
 </resources>

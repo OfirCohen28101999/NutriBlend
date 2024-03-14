@@ -1,7 +1,9 @@
 package com.example.nutriblend.Modules.AddRecipe
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import com.squareup.picasso.Picasso;
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -10,27 +12,41 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.example.nutriblend.api.ApiClient
-import com.example.nutriblend.api.NutritionalInfo
-import com.example.nutriblend.api.NutritionalInfoList
-import com.example.nutriblend.Model.Model
-import com.example.nutriblend.Model.Recipe
+import com.example.nutriblend.Modules.Recipes.RecipesFragmentDirections
 import com.example.nutriblend.R
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
-import java.util.UUID
+import com.example.nutriblend.databinding.FragmentAddRecipeBinding
 
 class AddRecipeFragment : Fragment() {
-    private var recipeTitleTextBox: EditText? = null
-    private var recipeIngredientsTextBox: EditText? = null
-    private var recipePreparationStepsTextBox: EditText? = null
-    private var saveRecipeBtn: Button? = null
-    private var cancelRecipeBtn: Button? = null
+    private var _binding:  FragmentAddRecipeBinding? = null
+    private val binding get() = _binding!!
 
+    private lateinit var viewModel: AddRecipeViewModel
+
+    private lateinit var recipeImageView: ImageView
+    private lateinit var recipeTitleTextBox: EditText
+    private lateinit var recipeIngredientsTextBox: EditText
+    private lateinit var recipePreparationStepsTextBox: EditText
+    private lateinit var saveRecipeBtn: Button
+    private lateinit var cancelRecipeBtn: Button
+    var progressBar: ProgressBar? = null
+
+    private var selectedImageUri: Uri? = null
+
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                val data = result.data
+                selectedImageUri = data?.data
+                Picasso.get().load(selectedImageUri).into(recipeImageView)
+            }
+        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -40,85 +56,71 @@ class AddRecipeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_add_recipe, container, false)
+        _binding = FragmentAddRecipeBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        viewModel = ViewModelProvider(this).get(AddRecipeViewModel::class.java)
+
         setupUI(view)
+
         return view
     }
 
     private fun setupUI(view: View) {
-        recipeTitleTextBox = view.findViewById(R.id.recipeTitleTextBox)
-        recipeIngredientsTextBox = view.findViewById(R.id.recipeIngredientsTextBox)
-        recipePreparationStepsTextBox = view.findViewById(R.id.recipePreparationStepsTextBox)
-        saveRecipeBtn = view.findViewById(R.id.saveRecipeBtn)
-        cancelRecipeBtn = view.findViewById(R.id.cancelRecipeBtn)
+        recipeImageView = binding.recipeImage
+        recipeTitleTextBox = binding.recipeTitleTextBox //view.findViewById(R.id.recipeTitleTextBox)
+        recipeIngredientsTextBox = binding.recipeIngredientsTextBox //view.findViewById(R.id.recipeIngredientsTextBox)
+        recipePreparationStepsTextBox = binding.recipePreparationStepsTextBox //view.findViewById(R.id.recipePreparationStepsTextBox)
+        saveRecipeBtn =  binding.saveRecipeBtn //view.findViewById(R.id.saveRecipeBtn)
+        cancelRecipeBtn = binding.cancelRecipeBtn //view.findViewById(R.id.cancelRecipeBtn)
+        progressBar = binding.progressBarAddRecipeFragment // view.findViewById(R.id.progressBar)
+        progressBar?.visibility = View.GONE
+
+        recipeImageView.setOnClickListener {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                getContent.launch(intent)
+        }
 
         cancelRecipeBtn?.setOnClickListener{
             Navigation.findNavController(it).popBackStack(R.id.recipesFragment, false)
         }
+
         saveRecipeBtn?.setOnClickListener{
             val recipeTitle = recipeTitleTextBox?.text.toString()
             val recipeIngredients = recipeIngredientsTextBox?.text.toString()
             val recipePreparationSteps = recipePreparationStepsTextBox?.text.toString()
 
-            val call = ApiClient.apiService.getNutritionalInfoList(recipeIngredients)
-            call.enqueue(object : Callback<NutritionalInfoList> {
-                override fun onResponse(call: Call<NutritionalInfoList>, response: Response<NutritionalInfoList>) {
-                    if (response.isSuccessful) {
-                        val nutritionalInfoList = response.body()
+            viewModel.addNewRecipe(selectedImageUri,recipeTitle, recipeIngredients, recipePreparationSteps)
+        }
 
-                        Log.i("TAG", nutritionalInfoList.toString())
+        viewModel.isNewRecipeAddedSuccessefully.observe(viewLifecycleOwner) { success ->
+            if (success) {
+                Toast.makeText(requireContext(), "Recipe ${recipeTitleTextBox?.text.toString()} uploaded successfully", Toast.LENGTH_SHORT)
+                    .show()
+                Navigation.findNavController(view).popBackStack(R.id.recipesFragment, false)
+            } else {
+                Toast.makeText(requireContext(), "Failed to add Recipe ${recipeTitleTextBox?.text.toString()}", Toast.LENGTH_SHORT).show()
+                Navigation.findNavController(view).popBackStack(R.id.recipesFragment, false)
+            }
+        }
 
-                        nutritionalInfoList?.let { nutritionalInfoList ->
-                            val summedUpNutritionalInfo: NutritionalInfo = ApiClient.sumUp(nutritionalInfoList)
-
-                            // Handle the retrieved post data
-                            Log.i("TAG", summedUpNutritionalInfo.toString())
-
-                            val recipe = Recipe(
-                                id = UUID.randomUUID().toString(),
-                                title = recipeTitle,
-                                ingredients = recipeIngredients,
-                                preparationSteps = recipePreparationSteps,
-                                imageUrl = "image.url",
-                                creatingUserId = "ofirCohenUserId",
-                                calories = summedUpNutritionalInfo.calories,
-                                sugar_g = summedUpNutritionalInfo.sugar_g,
-                                fiber_g = summedUpNutritionalInfo.fiber_g,
-                                sodium_mg = summedUpNutritionalInfo.sodium_mg,
-                                potassium_mg = summedUpNutritionalInfo.potassium_mg,
-                                fat_saturated_g = summedUpNutritionalInfo.fat_saturated_g,
-                                fat_total_g = summedUpNutritionalInfo.fat_total_g,
-                                cholesterol_mg = summedUpNutritionalInfo.cholesterol_mg,
-                                protein_g = summedUpNutritionalInfo.protein_g,
-                                carbohydrates_total_g = summedUpNutritionalInfo.carbohydrates_total_g
-                            )
-
-                            Log.i("TAG", recipe.toString())
-
-                            Model.instance.addRecipe(recipe) {
-                                Toast.makeText(context, "recipe: $recipeTitle saved successfully", Toast.LENGTH_SHORT).show()
-                                Navigation.findNavController(it).popBackStack(R.id.recipesFragment, false)
-                            }
-                        }
-                    } else {
-                        // Handle error
-                        Toast.makeText(context, "recipe: $recipeTitle save failed, could not retrieve nutritional data", Toast.LENGTH_SHORT).show()
-                        Navigation.findNavController(it).popBackStack(R.id.recipesFragment, false)
-                    }
-                }
-
-                override fun onFailure(call: Call<NutritionalInfoList>, t: Throwable) {
-                    // Handle failure
-                    Toast.makeText(context, "recipe: $recipeTitle save failed, could not retrieve nutritional data", Toast.LENGTH_SHORT).show()
-                    Navigation.findNavController(it).popBackStack(R.id.recipesFragment, false)
-                }
-            })
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                progressBar?.visibility = View.VISIBLE
+            } else {
+                progressBar?.visibility = View.GONE
+            }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

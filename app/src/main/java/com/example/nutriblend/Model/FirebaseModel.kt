@@ -1,6 +1,7 @@
 package com.example.nutriblend.Model
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.memoryCacheSettings
@@ -44,6 +45,25 @@ class FirebaseModel {
             .addOnSuccessListener { documentReference ->
                 callback()
             }
+    }
+
+    fun updateRecipe(recipe: Recipe, callback: () -> Unit) {
+        db.collection(RECIPES_COLLECTION_PATH)
+            .document(recipe.id)
+            .set(recipe.json,SetOptions.merge())
+            .addOnSuccessListener { documentReference ->
+                callback()
+            }
+    }
+
+    fun deleteRecipe(recipeId: String, callback: () -> Unit) {
+        db.collection(RECIPES_COLLECTION_PATH)
+            .document(recipeId)
+            .delete()
+            .addOnSuccessListener { documentReference ->
+                callback()
+            }
+
     }
 
     fun signupNewUser(user: User, callback: () -> Unit) {

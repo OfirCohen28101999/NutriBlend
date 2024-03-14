@@ -13,7 +13,7 @@ data class Recipe(@PrimaryKey var id: String,
                    var title: String,
                    var ingredients: String,
                    var preparationSteps: String,
-                   var imageUrl: String,
+                   var imageUrl: String?,
                    var creatingUserId: String,
                    var lastUpdated: Long? = null,
                    var isChecked: Boolean? = false,
@@ -67,7 +67,7 @@ data class Recipe(@PrimaryKey var id: String,
             val title = json[TITLE_KEY] as? String ?: ""
             val ingredients = json[INGREDIENTS_KEY] as? String? ?: ""
             val preparationSteps = json[PREPARATION_STEPS_KEY] as? String? ?: ""
-            val imageUrl = json[IMAGE_URL_KEY] as? String? ?: ""
+            val imageUrl = json[IMAGE_URL_KEY] as? String
             val creatingUserId = json[CREATING_USER_ID_KEY] as? String? ?: ""
             val isChecked = json[IS_CHECKED_KEY] as? Boolean ?: false
 

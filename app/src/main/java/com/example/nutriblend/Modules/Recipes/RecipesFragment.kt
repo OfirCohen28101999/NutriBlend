@@ -56,8 +56,9 @@ class RecipesFragment : Fragment() {
             override fun onItemClick(position: Int) {
                 Log.i("TAG","RecipesRecyclerAdapter: POSITION CLICKED ${position}")
                 val recipe = viewModel.recipes?.value?.get(position)
+
                 recipe?.let {
-                    val action = RecipesFragmentDirections.actionRecipesFragmentToBlueFragment().setTitleArgBlueFragment(it.title)
+                    val action = RecipesFragmentDirections.actionRecipesFragmentToRecipeFragment(it.id).setRecipeIdArgRecipeFragment(it.id)
                     Navigation.findNavController(view).navigate(action)
                 }
             }

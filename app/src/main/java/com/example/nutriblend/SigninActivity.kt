@@ -12,12 +12,40 @@ import com.example.nutriblend.Modules.Auth.SigninViewModel
 class SigninActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SigninViewModel
+
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var signinButton: Button
+    private lateinit var signupButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signin)
 
         viewModel = ViewModelProvider(this)[SigninViewModel::class.java]
 
+        bindElements()
+        initListeners()
+        initObservers()
+    }
+
+    fun bindElements(){
+        emailEditText = findViewById(R.id.signinEmailEditText)
+        passwordEditText = findViewById(R.id.signinPasswordEditText)
+        signinButton = findViewById(R.id.signinActivitySigninBtn)
+        signupButton = findViewById(R.id.signinActivitySignupBtn)
+    }
+
+    fun initListeners(){
+        signinButton.setOnClickListener {
+            viewModel.signin(emailEditText.text.toString(), passwordEditText.text.toString())
+        }
+        signupButton.setOnClickListener {
+            startActivity(Intent(this, SignupActivity::class.java))
+        }
+    }
+
+    fun initObservers(){
         viewModel.signinSuccess.observe(this) { isSuccess ->
             if (isSuccess) {
                 val intent = Intent(this, MainActivity::class.java)
@@ -31,25 +59,5 @@ class SigninActivity : AppCompatActivity() {
                 ).show()
             }
         }
-
-        val signinButton = findViewById<Button>(R.id.signinActivitySigninBtn)
-        signinButton.setOnClickListener {
-            signinUser()
-        }
-
-        val signupButton = findViewById<Button>(R.id.signinActivitySignupBtn)
-        signupButton.setOnClickListener {
-            startActivity(Intent(this, SignupActivity::class.java))
-        }
-    }
-
-    private fun signinUser() {
-        val emailEditText = findViewById<EditText>(R.id.signinEmailEditText)
-        val passwordEditText = findViewById<EditText>(R.id.signinPasswordEditText)
-
-        val email = emailEditText.text.toString()
-        val password = passwordEditText.text.toString()
-
-        viewModel.signin(email, password)
     }
 }

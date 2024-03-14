@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.base.MyApplication
 
-@Database(entities = [Recipe::class], version = 3)
+@Database(entities = [Recipe::class], version = 7)
 abstract class AppLocalDbRepository : RoomDatabase() {
     abstract fun RecipeDao(): RecipeDao
 }

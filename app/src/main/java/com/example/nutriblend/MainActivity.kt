@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.mainActivityBottomNavigationView)
+
         navController?.let {
             NavigationUI.setupWithNavController(bottomNavigationView,it)
         }
@@ -48,12 +49,6 @@ class MainActivity : AppCompatActivity() {
                 navController?.navigateUp()
                 true
             }
-//            R.id.addRecipeFragment -> {
-//                navController?.navigate(R.id.action_global_addRecipeFragment)
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-            // can be used in case the id of the menu item & nav graph dest are equal
             else -> navController?.let { NavigationUI.onNavDestinationSelected(item,it) } ?: super.onOptionsItemSelected(item)
         }
     }
