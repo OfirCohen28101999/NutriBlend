@@ -48,13 +48,13 @@ class RecipeFragment : Fragment() {
     private lateinit var sugarValueTextView: TextView
     private lateinit var fiberValueTextView: TextView
 
-    private var saveBtn: Button? = null
-    private var deleteBtn: Button? = null
-
-    var progressBar: ProgressBar? = null
+    private lateinit var saveBtn: Button
+    private lateinit var deleteBtn: Button
+    private lateinit var progressBar: ProgressBar
 
     private var selectedImageUri: Uri? = null
 
+    // TODO: check img logic
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
@@ -85,15 +85,15 @@ class RecipeFragment : Fragment() {
         return view
     }
 
-    fun setupUI(recipe: Recipe?, view: View) {
+    private fun setupUI(recipe: Recipe?, view: View) {
         bindElements()
         insertRecipeValues(recipe!!)
         changeEditViewBasedOnCurrentUser(recipe)
-        initButtonListeners(recipe)
-        observeActionsStatuses(view)
+        initListeners(recipe)
+        observeActionStatuses(view)
     }
 
-    fun bindElements(){
+    private fun bindElements(){
         recipeImageView = binding.recipeImageFragmentRecipe
         progressBar = binding.progressBarRecipeFragment
         saveBtn = binding.saveRecipeBtnFragmentRecipe
@@ -111,10 +111,10 @@ class RecipeFragment : Fragment() {
         cholesterolValueTextView = binding.cholesterolValueTextView
         sugarValueTextView = binding.sugarValueTextView
         fiberValueTextView = binding.fiberValueTextView
-        progressBar?.visibility = View.GONE
+        progressBar.visibility = View.GONE
     }
 
-    fun insertRecipeValues(recipe: Recipe){
+    private fun insertRecipeValues(recipe: Recipe){
         recipeTitleTextView.setText(recipe.title)
         recipeIngredientsTextView.setText(recipe.ingredients)
         recipePrepStepsTextView.setText(recipe.preparationSteps)
@@ -129,10 +129,10 @@ class RecipeFragment : Fragment() {
         sugarValueTextView.text = recipe.sugar_g?.toString() ?: "0.000"
         fiberValueTextView.text = recipe.fiber_g?.toString() ?: "0.000"
     }
-    fun changeEditViewBasedOnCurrentUser(recipe: Recipe) {
+    private fun changeEditViewBasedOnCurrentUser(recipe: Recipe) {
         if(auth.currentUser?.uid!! == recipe.creatingUserId) {
-            saveBtn!!.visibility = View.VISIBLE
-            deleteBtn!!.visibility = View.VISIBLE
+            saveBtn.visibility = View.VISIBLE
+            deleteBtn.visibility = View.VISIBLE
 
             recipeImageView.setOnClickListener {
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -140,8 +140,8 @@ class RecipeFragment : Fragment() {
                 getContent.launch(intent)
             }
         } else {
-            saveBtn!!.visibility = View.GONE
-            deleteBtn!!.visibility = View.GONE
+            saveBtn.visibility = View.GONE
+            deleteBtn.visibility = View.GONE
 
             recipeTitleTextView.isEnabled = false
             recipeTitleTextView.isFocusable = false
@@ -159,12 +159,12 @@ class RecipeFragment : Fragment() {
             recipePrepStepsTextView.setTextColor(Color.BLACK)
         }
     }
-    fun initButtonListeners(recipe: Recipe){
-        deleteBtn?.setOnClickListener{
+    private fun initListeners(recipe: Recipe){
+        deleteBtn.setOnClickListener{
             viewModel.deleteRecipe(recipe)
         }
 
-        saveBtn?.setOnClickListener {
+        saveBtn.setOnClickListener {
             val recipeTitle = recipeTitleTextView.text.toString()
             val recipeIngredients = recipeIngredientsTextView.text.toString()
             val recipePreparationSteps = recipePrepStepsTextView.text.toString()
@@ -173,8 +173,10 @@ class RecipeFragment : Fragment() {
                 recipe.imageUrl, selectedImageUri,recipeTitle, recipeIngredients, recipePreparationSteps)
         }
     }
-    fun observeActionsStatuses(view: View){
-        viewModel.isRecipeUpdatedSuccessefully.observe(viewLifecycleOwner) { success ->
+    private fun observeActionStatuses(view: View){
+
+        // TODO: bug: happens 3 times for some reason
+        viewModel.isRecipeUpdatedSuccessfully.observe(viewLifecycleOwner) { success ->
             if (success) {
                 Toast.makeText(requireContext(), "Recipe ${recipeTitleTextView.text} updated successfully", Toast.LENGTH_SHORT)
                     .show()
@@ -183,7 +185,7 @@ class RecipeFragment : Fragment() {
             }
         }
 
-        viewModel.isRecipeDeletedSuccessefully.observe(viewLifecycleOwner) { success ->
+        viewModel.isRecipeDeletedSuccessfully.observe(viewLifecycleOwner) { success ->
             if (success) {
                 Toast.makeText(requireContext(), "Recipe ${recipeTitleTextView.text} deleted successfully", Toast.LENGTH_SHORT)
                     .show()
@@ -195,9 +197,9 @@ class RecipeFragment : Fragment() {
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             if (isLoading) {
-                progressBar?.visibility = View.VISIBLE
+                progressBar.visibility = View.VISIBLE
             } else {
-                progressBar?.visibility = View.GONE
+                progressBar.visibility = View.GONE
             }
         }
     }

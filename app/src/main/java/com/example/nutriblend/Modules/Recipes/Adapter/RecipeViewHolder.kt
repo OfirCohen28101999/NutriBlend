@@ -12,9 +12,11 @@ import com.example.nutriblend.R
 import com.squareup.picasso.Picasso
 
 class RecipeViewHolder(val itemView: View, val listener: OnItemClickListener?, var recipes: List<Recipe>?): RecyclerView.ViewHolder(itemView){
-    var recipeImageView: ImageView? = null
-    var recipeTitleTextView: TextView? = null
-    var recipeCheckbox: CheckBox? = null
+    private var recipeImageView: ImageView
+    private var recipeTitleTextView: TextView
+
+    // todo: delete checkbox
+    private var recipeCheckbox: CheckBox
     var recipe: Recipe? = null
 
     init {
@@ -22,9 +24,9 @@ class RecipeViewHolder(val itemView: View, val listener: OnItemClickListener?, v
         recipeCheckbox = itemView.findViewById(R.id.cbRecipeListRow)
         recipeImageView = itemView.findViewById(R.id.ivRecipeListRowImage)
 
-        recipeCheckbox?.setOnClickListener{
+        recipeCheckbox.setOnClickListener{
             val recipe = recipes?.get(adapterPosition)
-            recipe?.isChecked = recipeCheckbox?.isChecked ?: false
+            recipe?.isChecked = recipeCheckbox.isChecked ?: false
         }
 
         itemView.setOnClickListener {
@@ -37,11 +39,14 @@ class RecipeViewHolder(val itemView: View, val listener: OnItemClickListener?, v
 
     fun bind(recipe: Recipe?) {
         this.recipe = recipe
-        recipeTitleTextView?.text = recipe?.title
-        recipeCheckbox?.apply {
+        recipeTitleTextView.text = recipe?.title
+        recipeCheckbox.apply {
             isChecked = recipe?.isChecked ?: false
         }
+
         if(recipe?.imageUrl != null) {
+
+            // todo: check load img with picasso
             Picasso.get().load(recipe.imageUrl).into(recipeImageView)
         }
     }

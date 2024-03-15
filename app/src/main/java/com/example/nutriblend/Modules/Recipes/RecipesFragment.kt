@@ -19,9 +19,9 @@ import com.example.nutriblend.Modules.Recipes.Adapter.RecipesRecyclerAdapter
 import com.example.nutriblend.databinding.FragmentRecipesBinding
 
 class RecipesFragment : Fragment() {
-    var recipesRecyclerView: RecyclerView? = null
-    var adapter: RecipesRecyclerAdapter? = null
-    var progressBar: ProgressBar? = null
+    private var recipesRecyclerView: RecyclerView? = null
+    private var adapter: RecipesRecyclerAdapter? = null
+    private var progressBar: ProgressBar? = null
     private var _binding:  FragmentRecipesBinding? = null
     private val binding get() = _binding!!
 
@@ -31,17 +31,16 @@ class RecipesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-        val view = binding.root // inflater.inflate(R.layout.fragment_recipes, container, false)
+        val view = binding.root
 
         viewModel = ViewModelProvider(this)[RecipesViewModel::class.java]
 
-        progressBar = binding.progressBar // view.findViewById(R.id.progressBar)
+        progressBar = binding.progressBar
         progressBar?.visibility = View.VISIBLE
 
         viewModel.recipes = Model.instance.getAllRecipes()
 
-        recipesRecyclerView = binding.rvRecipesFragmentList // view.findViewById(R.id.rvRecipesFragmentList)
+        recipesRecyclerView = binding.rvRecipesFragmentList
         recipesRecyclerView?.setHasFixedSize(true)
 
         // set layout manager
@@ -54,7 +53,6 @@ class RecipesFragment : Fragment() {
 
         adapter?.listener = object : OnItemClickListener {
             override fun onItemClick(position: Int) {
-                Log.i("TAG","RecipesRecyclerAdapter: POSITION CLICKED ${position}")
                 val recipe = viewModel.recipes?.value?.get(position)
 
                 recipe?.let {
@@ -64,7 +62,8 @@ class RecipesFragment : Fragment() {
             }
 
             override fun onRecipeClicked(recipe: Recipe?) {
-                Log.i("TAG","RecipesRecyclerAdapter: RECIPE ${recipe}")            }
+                Log.i("TAG","RecipesRecyclerAdapter: RECIPE $recipe")
+            }
         }
 
         recipesRecyclerView?.adapter = adapter
@@ -94,7 +93,7 @@ class RecipesFragment : Fragment() {
         super.onResume()
         reloadRecipes()
     }
-    fun reloadRecipes() {
+    private fun reloadRecipes() {
         progressBar?.visibility = View.VISIBLE
         Model.instance.refreshAllRecipes()
         progressBar?.visibility = View.GONE

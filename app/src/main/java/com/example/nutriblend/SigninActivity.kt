@@ -29,14 +29,14 @@ class SigninActivity : AppCompatActivity() {
         initObservers()
     }
 
-    fun bindElements(){
+    private fun bindElements(){
         emailEditText = findViewById(R.id.signinEmailEditText)
         passwordEditText = findViewById(R.id.signinPasswordEditText)
         signinButton = findViewById(R.id.signinActivitySigninBtn)
         signupButton = findViewById(R.id.signinActivitySignupBtn)
     }
 
-    fun initListeners(){
+    private fun initListeners(){
         signinButton.setOnClickListener {
             viewModel.signin(emailEditText.text.toString(), passwordEditText.text.toString())
         }
@@ -45,7 +45,7 @@ class SigninActivity : AppCompatActivity() {
         }
     }
 
-    fun initObservers(){
+    private fun initObservers(){
         viewModel.signinSuccess.observe(this) { isSuccess ->
             if (isSuccess) {
                 val intent = Intent(this, MainActivity::class.java)

@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.example.nutriblend.Modules.Auth.SignupViewModel
+import com.squareup.picasso.Picasso
 
 class SignupActivity : AppCompatActivity() {
 
@@ -33,7 +34,9 @@ class SignupActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val data = result.data
             selectedImageUri = data?.data
-            userImageView.setImageURI(data?.data)
+            Picasso.get().load(selectedImageUri).into(userImageView)
+
+//            userImageView.setImageURI(data?.data)
         }
     }
 

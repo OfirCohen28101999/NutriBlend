@@ -1,7 +1,6 @@
 package com.example.nutriblend.Modules.AddRecipe
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,8 +21,8 @@ class AddRecipeViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val storageReference: StorageReference = FirebaseStorage.getInstance().reference
 
-    private val _isNewRecipeAddedSuccessefully = MutableLiveData<Boolean>()
-    val isNewRecipeAddedSuccessefully: LiveData<Boolean> get() = _isNewRecipeAddedSuccessefully
+    private val _isNewRecipeAddedSuccessfully = MutableLiveData<Boolean>()
+    val isNewRecipeAddedSuccessfully: LiveData<Boolean> get() = _isNewRecipeAddedSuccessfully
 
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -36,6 +35,7 @@ class AddRecipeViewModel : ViewModel() {
         val recipeId = UUID.randomUUID().toString()
         var imageUrl: String? = null
 
+        // todo: delete previousImgUrl if not null & check storage logic
         if (imageUri != null) {
             val imageRef = storageReference.child("images/$recipeId.jpg")
 
@@ -46,14 +46,14 @@ class AddRecipeViewModel : ViewModel() {
                     }
                 }
                 .addOnFailureListener { e ->
-                    _isNewRecipeAddedSuccessefully.postValue(false)
+                    _isNewRecipeAddedSuccessfully.postValue(false)
                 }
         }
 
         // if want to upload recipe && imageSuccess OR doesn't want to upload recipe image at all
         if ((imageUri != null && imageUrl != null) || (imageUri == null)) {
 
-            // get nutritional values from calorieNinja api
+            // get nutritional values from calorieNinja api todo: get rid of duplication somehow
             val call = ApiClient.apiService.getNutritionalInfoList(ingredients)
             call.enqueue(object : Callback<NutritionalInfoList> {
                 override fun onResponse(
@@ -61,16 +61,8 @@ class AddRecipeViewModel : ViewModel() {
                     response: Response<NutritionalInfoList>
                 ) {
                     if (response.isSuccessful) {
-                        val nutritionalInfoList = response.body()
-
-                        Log.i("TAG", nutritionalInfoList.toString())
-
-                        nutritionalInfoList?.let { nutritionalInfoList ->
-                            val summedUpNutritionalInfo: NutritionalInfo =
-                                ApiClient.sumUp(nutritionalInfoList)
-
-                            Log.i("TAG", summedUpNutritionalInfo.toString())
-
+                        response.body()?.let { nutritionalInfoList ->
+                            val summedUpNutritionalInfo: NutritionalInfo = ApiClient.sumUp(nutritionalInfoList)
                             val newRecipe = Recipe(
                                 id = recipeId,
                                 title = title,
@@ -89,21 +81,18 @@ class AddRecipeViewModel : ViewModel() {
                                 protein_g = summedUpNutritionalInfo.protein_g,
                                 carbohydrates_total_g = summedUpNutritionalInfo.carbohydrates_total_g
                             )
-
-                            Log.i("TAG", newRecipe.toString())
-
                             Model.instance.addRecipe(newRecipe) {
-                                _isNewRecipeAddedSuccessefully.postValue(true)
+                                _isNewRecipeAddedSuccessfully.postValue(true)
                                 recipe = newRecipe
                             }
                         }
                     } else {
-                        _isNewRecipeAddedSuccessefully.postValue(false)
+                        _isNewRecipeAddedSuccessfully.postValue(false)
                     }
                 }
 
                 override fun onFailure(call: Call<NutritionalInfoList>, t: Throwable) {
-                    _isNewRecipeAddedSuccessefully.postValue(false)
+                    _isNewRecipeAddedSuccessfully.postValue(false)
                 }
             })
         }
