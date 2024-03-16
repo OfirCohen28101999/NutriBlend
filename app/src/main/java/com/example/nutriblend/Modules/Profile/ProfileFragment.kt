@@ -48,7 +48,6 @@ class ProfileFragment : Fragment() {
 
     private var selectedImageUri: Uri? = null
 
-    // TODO: check img logic
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
@@ -102,8 +101,8 @@ class ProfileFragment : Fragment() {
     private fun insertUserProfileValues(user: User?){
         if(user?.avatarUrl != null){
             Picasso.get().load(user.avatarUrl).into(profileImage)
-
         }
+
         firstNameEditText.setText(user?.firstName)
         lastNameEditText.setText(user?.lastName)
         usernameEditText.setText(user?.username)

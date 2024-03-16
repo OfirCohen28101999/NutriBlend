@@ -63,7 +63,8 @@ class FirebaseModel {
 
     fun addRecipe(recipe: Recipe, callback: () -> Unit) {
         db.collection(RECIPES_COLLECTION_PATH)
-            .add(recipe.json)
+            .document(recipe.id)
+            .set(recipe.json)
             .addOnSuccessListener { documentReference ->
                 callback()
             }

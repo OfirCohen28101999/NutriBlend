@@ -15,19 +15,11 @@ class RecipeViewHolder(val itemView: View, val listener: OnItemClickListener?, v
     private var recipeImageView: ImageView
     private var recipeTitleTextView: TextView
 
-    // todo: delete checkbox
-    private var recipeCheckbox: CheckBox
     var recipe: Recipe? = null
 
     init {
         recipeTitleTextView = itemView.findViewById(R.id.tvRecipeListRowTitle)
-        recipeCheckbox = itemView.findViewById(R.id.cbRecipeListRow)
         recipeImageView = itemView.findViewById(R.id.ivRecipeListRowImage)
-
-        recipeCheckbox.setOnClickListener{
-            val recipe = recipes?.get(adapterPosition)
-            recipe?.isChecked = recipeCheckbox.isChecked ?: false
-        }
 
         itemView.setOnClickListener {
             Log.i("TAG","RecipeViewHolder: Position clicked $adapterPosition")
@@ -40,13 +32,8 @@ class RecipeViewHolder(val itemView: View, val listener: OnItemClickListener?, v
     fun bind(recipe: Recipe?) {
         this.recipe = recipe
         recipeTitleTextView.text = recipe?.title
-        recipeCheckbox.apply {
-            isChecked = recipe?.isChecked ?: false
-        }
 
-        if(recipe?.imageUrl != null) {
-
-            // todo: check load img with picasso
+        if(recipe?.imageUrl != null){
             Picasso.get().load(recipe.imageUrl).into(recipeImageView)
         }
     }

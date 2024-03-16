@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.example.nutriblend.Model.Model
 import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.api.ApiClient
-import com.example.nutriblend.api.NutritionalInfo
 import com.example.nutriblend.api.NutritionalInfoList
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
@@ -35,14 +34,43 @@ class AddRecipeViewModel : ViewModel() {
         val recipeId = UUID.randomUUID().toString()
         var imageUrl: String? = null
 
-        // todo: delete previousImgUrl if not null & check storage logic
         if (imageUri != null) {
-            val imageRef = storageReference.child("images/$recipeId.jpg")
+            val imageRef = storageReference.child("recipe images/$recipeId")
 
             imageRef.putFile(imageUri)
                 .addOnSuccessListener {
                     imageRef.downloadUrl.addOnSuccessListener { uri ->
                         imageUrl = uri.toString()
+
+                        val call = ApiClient.apiService.getNutritionalInfoList(ingredients)
+                        call.enqueue(object : Callback<NutritionalInfoList> {
+                            override fun onResponse(
+                                call: Call<NutritionalInfoList>,
+                                response: Response<NutritionalInfoList>
+                            ) {
+                                if (response.isSuccessful) {
+                                    response.body()?.let { nutritionalInfoList ->
+                                        val newRecipe: Recipe = ApiClient.createRecipeWithNutritionalInfo(nutritionalInfoList,
+                                            recipeId,
+                                            title,
+                                            ingredients,
+                                            preparationSteps,
+                                            imageUrl,
+                                            auth.currentUser?.uid!!)
+                                        Model.instance.addRecipe(newRecipe) {
+                                            _isNewRecipeAddedSuccessfully.postValue(true)
+                                            recipe = newRecipe
+                                        }
+                                    }
+                                } else {
+                                    _isNewRecipeAddedSuccessfully.postValue(false)
+                                }
+                            }
+
+                            override fun onFailure(call: Call<NutritionalInfoList>, t: Throwable) {
+                                _isNewRecipeAddedSuccessfully.postValue(false)
+                            }
+                        })
                     }
                 }
                 .addOnFailureListener { e ->
@@ -53,7 +81,6 @@ class AddRecipeViewModel : ViewModel() {
         // if want to upload recipe && imageSuccess OR doesn't want to upload recipe image at all
         if ((imageUri != null && imageUrl != null) || (imageUri == null)) {
 
-            // get nutritional values from calorieNinja api todo: get rid of duplication somehow
             val call = ApiClient.apiService.getNutritionalInfoList(ingredients)
             call.enqueue(object : Callback<NutritionalInfoList> {
                 override fun onResponse(

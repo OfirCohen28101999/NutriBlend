@@ -7,7 +7,7 @@ import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.Model.User
 import com.example.nutriblend.base.MyApplication
 
-@Database(entities = [Recipe::class, User::class], version = 10)
+@Database(entities = [Recipe::class, User::class], version = 11)
 abstract class AppLocalDbRepository : RoomDatabase() {
     abstract fun RecipeDao(): RecipeDao
     abstract fun UserDao(): UserDao

@@ -33,7 +33,7 @@ class SignupViewModel : ViewModel() {
     }
 
     private fun createExtendedUser(userId: String ,userName: String, firstName: String, lastName: String, email: String, imageUri: Uri?) {
-        val imageRef = storageReference.child("post images/$userId.jpg")
+        val imageRef = storageReference.child("user images/$userId")
 
         if (imageUri != null) {
             imageRef.putFile(imageUri)

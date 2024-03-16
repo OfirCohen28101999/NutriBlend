@@ -23,19 +23,33 @@ class ProfileViewModel : ViewModel() {
         _isLoading.value = true
         var imageUrl: String? = null
 
-        // todo: delete previousAvatarUrl if not null & check storage logic
         if (imageUri != null) {
-            val imageRef = storageReference.child("images/${user.id}.jpg")
+            val imageRef = storageReference.child("user images/${user.id}")
 
-            imageRef.putFile(imageUri)
-                .addOnSuccessListener {
-                    imageRef.downloadUrl.addOnSuccessListener { uri ->
-                        imageUrl = uri.toString()
+            imageRef.delete().addOnCompleteListener {
+                imageRef.putFile(imageUri)
+                    .addOnSuccessListener {
+                        imageRef.downloadUrl.addOnSuccessListener { uri ->
+                            imageUrl = uri.toString()
+
+                            val updatedUser = User(
+                                id = user.id,
+                                avatarUrl = imageUrl ?: user.avatarUrl,
+                                email = user.email,
+                                firstName = firstName,
+                                lastName = lastName,
+                                username = username
+                            )
+
+                            Model.instance.updateUserProfile(updatedUser) {
+                                _isUserUpdatedSuccessfully.postValue(true)
+                            }
+                        }
                     }
-                }
-                .addOnFailureListener { e ->
-                    _isUserUpdatedSuccessfully.postValue(false)
-                }
+                    .addOnFailureListener {
+                        _isUserUpdatedSuccessfully.postValue(false)
+                    }
+            }
         }
 
         // if want to upload user img && imageSuccess OR doesn't want to update userimg at all

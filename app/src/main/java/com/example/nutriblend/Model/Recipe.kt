@@ -16,7 +16,6 @@ data class Recipe(@PrimaryKey var id: String,
                    var imageUrl: String?,
                    var creatingUserId: String,
                    var lastUpdated: Long? = null,
-                   var isChecked: Boolean? = false,
                    var calories: Double? = null,
                    var fat_total_g: Double? = null,
                    var fat_saturated_g: Double? = null,
@@ -49,7 +48,6 @@ data class Recipe(@PrimaryKey var id: String,
         const val PREPARATION_STEPS_KEY = "preparationSteps"
         const val IMAGE_URL_KEY = "imageUrl"
         const val CREATING_USER_ID_KEY = "creatingUserId"
-        const val IS_CHECKED_KEY = "isChecked"
         const val LAST_UPDATED_KEY = "lastUpdated"
         const val CALORIES_KEY = "calories"
         const val FAT_TOTAL_KEY = "fat_total_g"
@@ -69,9 +67,6 @@ data class Recipe(@PrimaryKey var id: String,
             val preparationSteps = json[PREPARATION_STEPS_KEY] as? String? ?: ""
             val imageUrl = json[IMAGE_URL_KEY] as? String
             val creatingUserId = json[CREATING_USER_ID_KEY] as? String? ?: ""
-            val isChecked = json[IS_CHECKED_KEY] as? Boolean ?: false
-
-            // TODO: beware
             val lastUpdated: Long? = (json[LAST_UPDATED_KEY] as? Timestamp)?.seconds ?: 0
             val calories = json[CALORIES_KEY] as? Double ?: 0.00
             val fat_total_g = json[FAT_TOTAL_KEY] as? Double ?: 0.00
@@ -92,7 +87,6 @@ data class Recipe(@PrimaryKey var id: String,
                 imageUrl,
                 creatingUserId,
                 lastUpdated,
-                isChecked,
                 calories,
                 fat_total_g,
                 fat_saturated_g,
@@ -115,7 +109,6 @@ data class Recipe(@PrimaryKey var id: String,
                     PREPARATION_STEPS_KEY to preparationSteps,
                     IMAGE_URL_KEY to imageUrl,
                     CREATING_USER_ID_KEY to creatingUserId,
-                    IS_CHECKED_KEY to isChecked,
                     LAST_UPDATED_KEY to FieldValue.serverTimestamp(),
                     CALORIES_KEY to calories,
                     FAT_TOTAL_KEY to fat_total_g,

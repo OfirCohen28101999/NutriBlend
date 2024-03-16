@@ -54,7 +54,6 @@ class RecipeFragment : Fragment() {
 
     private var selectedImageUri: Uri? = null
 
-    // TODO: check img logic
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
@@ -119,6 +118,7 @@ class RecipeFragment : Fragment() {
             Picasso.get().load(recipe.imageUrl).into(recipeImageView)
 
         }
+
         recipeTitleTextView.setText(recipe.title)
         recipeIngredientsTextView.setText(recipe.ingredients)
         recipePrepStepsTextView.setText(recipe.preparationSteps)
@@ -175,8 +175,7 @@ class RecipeFragment : Fragment() {
             val recipeIngredients = recipeIngredientsTextView.text.toString()
             val recipePreparationSteps = recipePrepStepsTextView.text.toString()
 
-            viewModel.updateRecipe(recipe.id,
-                recipe.imageUrl, selectedImageUri,recipeTitle, recipeIngredients, recipePreparationSteps)
+            viewModel.updateRecipe(recipe, selectedImageUri,recipeTitle, recipeIngredients, recipePreparationSteps)
         }
     }
     private fun observeActionStatuses(view: View){
