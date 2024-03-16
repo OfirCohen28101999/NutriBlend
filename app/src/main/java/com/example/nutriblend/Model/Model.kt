@@ -27,6 +27,11 @@ class Model private constructor(){
         return database.RecipeDao().getAll()
     }
 
+    fun getMyRecipes(userId: String): LiveData<MutableList<Recipe>> {
+        refreshAllRecipes()
+        return database.RecipeDao().getRecipesByCreatingUserId(userId)
+    }
+
     fun getRecipeById(recipeId: String): LiveData<Recipe?> {
         return database.RecipeDao().getRecipeById(recipeId)
     }

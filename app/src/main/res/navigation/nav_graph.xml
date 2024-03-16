@@ -16,6 +16,10 @@
         <action
             android:id="@+id/action_recipesFragment_to_recipeFragment"
             app:destination="@id/recipeFragment" />
+        <argument
+            android:name="isMyRecipes"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/addRecipeFragment"

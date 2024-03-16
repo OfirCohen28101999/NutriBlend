@@ -2,12 +2,13 @@ package com.example.nutriblend.Modules.Recipes
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriblend.Model.Model
 import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.Modules.Recipes.Adapter.RecipesRecyclerAdapter
-
 import com.example.nutriblend.databinding.FragmentRecipesBinding
+import com.google.firebase.auth.FirebaseAuth
+
 
 class RecipesFragment : Fragment() {
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     private var recipesRecyclerView: RecyclerView? = null
     private var adapter: RecipesRecyclerAdapter? = null
     private var progressBar: ProgressBar? = null
@@ -26,6 +30,9 @@ class RecipesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: RecipesViewModel
+
+    private val args: RecipesFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +45,11 @@ class RecipesFragment : Fragment() {
         progressBar = binding.progressBar
         progressBar?.visibility = View.VISIBLE
 
-        viewModel.recipes = Model.instance.getAllRecipes()
+        if (args.isMyRecipes) {
+            viewModel.recipes = Model.instance.getMyRecipes(auth.currentUser?.uid!!)
+        } else {
+            viewModel.recipes = Model.instance.getAllRecipes()
+        }
 
         recipesRecyclerView = binding.rvRecipesFragmentList
         recipesRecyclerView?.setHasFixedSize(true)
@@ -72,18 +83,18 @@ class RecipesFragment : Fragment() {
         val action = Navigation.createNavigateOnClickListener(RecipesFragmentDirections.actionGlobalAddRecipeFragment())
         addRecipeBtn.setOnClickListener(action)
 
-        viewModel.recipes?.observe(viewLifecycleOwner) {
-            adapter?.recipes = it
-            adapter?.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
-        }
-
         binding.pullToRefresh.setOnRefreshListener {
             reloadRecipes()
         }
 
         Model.instance.recipesListLoadingState.observe(viewLifecycleOwner) { state ->
             binding.pullToRefresh.isRefreshing = state == Model.LoadingState.LOADING
+        }
+
+        viewModel.recipes?.observe(viewLifecycleOwner) { recipes ->
+            adapter?.recipes = recipes
+            adapter?.notifyDataSetChanged()
+            progressBar?.visibility = View.GONE
         }
 
         return view

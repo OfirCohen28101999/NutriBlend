@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.nutriblend.Model.Model
+import com.example.nutriblend.Modules.Recipes.RecipesFragmentDirections
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -29,6 +30,26 @@ class MainActivity : AppCompatActivity() {
 
         navController?.let {
             NavigationUI.setupWithNavController(bottomNavigationView,it)
+        }
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.recipesFragment -> {
+                    val action = RecipesFragmentDirections.actionGlobalRecipesFragment().setIsMyRecipes(false)
+                    navController?.navigate(action)
+                }
+                R.id.myRecipesFragment -> {
+                    val action = RecipesFragmentDirections.actionGlobalRecipesFragment().setIsMyRecipes(true)
+                    navController?.navigate(action)
+                }
+                R.id.addRecipeFragment -> {
+                    navController?.navigate(R.id.addRecipeFragment)
+                }
+                R.id.profileFragment -> {
+                    navController?.navigate(R.id.profileFragment)
+                }
+            }
+            true
         }
 
         if (auth.currentUser == null) {
