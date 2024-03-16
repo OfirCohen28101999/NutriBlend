@@ -34,4 +34,8 @@
     <string name="cancel">Cancel</string>
     <string name="empty_nutritional_value">0.000</string>
     <string name="delete">Delete</string>
+    <string name="profile">Profile</string>
+    <string name="add_new_recipe">Add new recipe</string>
+    <string name="recipes">Recipes</string>
+    <string name="signout">signout</string>
 </resources>

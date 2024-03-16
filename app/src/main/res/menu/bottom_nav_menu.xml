@@ -5,12 +5,13 @@
     <item
         android:id="@+id/recipesFragment"
         android:icon="@android:drawable/ic_dialog_dialer"
-        android:title="Recipes" />
+        android:title="@string/recipes" />
     <item
         android:id="@+id/addRecipeFragment"
         android:icon="@android:drawable/ic_menu_add"
-        android:title="Add new recipe" />
+        android:title="@string/add_new_recipe" />
     <item
+        android:id="@+id/profileFragment"
         android:icon="@android:drawable/ic_dialog_info"
-        android:title="Profile" />
+        android:title="@string/profile" />
 </menu>

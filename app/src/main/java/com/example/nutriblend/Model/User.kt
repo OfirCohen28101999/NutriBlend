@@ -1,10 +1,13 @@
 package com.example.nutriblend.Model
 
+import android.content.Context
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.nutriblend.base.MyApplication
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.QueryDocumentSnapshot
+
 @Entity
 data class User(@PrimaryKey var id: String,
                    var username: String,
@@ -17,6 +20,18 @@ data class User(@PrimaryKey var id: String,
 ) {
 
     companion object {
+        var lastUpdated: Long
+            get() {
+                return MyApplication.Globals.appContext?.getSharedPreferences("TAG", Context.MODE_PRIVATE)?.getLong(
+                    GET_LAST_UPDATED, 0) ?: 0
+            }
+            set(value) {
+                MyApplication.Globals?.appContext?.getSharedPreferences("TAG", Context.MODE_PRIVATE)?.edit()?.putLong(
+                    GET_LAST_UPDATED, value)?.apply()
+            }
+
+        const val GET_LAST_UPDATED = "get_last_updated"
+
         const val USERNAME_KEY = "username"
         const val FIRST_NAME_KEY = "firstName"
         const val LAST_NAME_KEY = "lastName"

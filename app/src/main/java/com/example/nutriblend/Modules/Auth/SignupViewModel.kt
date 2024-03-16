@@ -22,7 +22,7 @@ class SignupViewModel : ViewModel() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    createExtendedUser(userName, firstName,lastName, email, imageUri)
+                    task.result.user?.let { createExtendedUser(it.uid ,userName, firstName,lastName, email, imageUri) }
                 } else {
                     _signupSuccess.value = false
                 }
@@ -32,17 +32,14 @@ class SignupViewModel : ViewModel() {
             }
     }
 
-    private fun createExtendedUser(userName: String, firstName: String, lastName: String, email: String, imageUri: Uri?) {
-        val currentUserId: String = FirebaseAuth.getInstance().currentUser!!.uid
-
-        val imageName = UUID.randomUUID().toString()
-        val imageRef = storageReference.child("post images/$imageName.jpg")
+    private fun createExtendedUser(userId: String ,userName: String, firstName: String, lastName: String, email: String, imageUri: Uri?) {
+        val imageRef = storageReference.child("post images/$userId.jpg")
 
         if (imageUri != null) {
             imageRef.putFile(imageUri)
                 .addOnSuccessListener {
                     imageRef.downloadUrl.addOnSuccessListener { uri ->
-                        Model.instance.signupNewUser(User(id = currentUserId, username = userName.lowercase(), firstName = firstName, lastName = lastName, email = email, avatarUrl = uri.toString(), createdAt = System.currentTimeMillis())) {
+                        Model.instance.signupNewUser(User(id = userId, username = userName.lowercase(), firstName = firstName, lastName = lastName, email = email, avatarUrl = uri.toString(), createdAt = System.currentTimeMillis())) {
                             _signupSuccess.value = true
                         }
                     }
@@ -51,7 +48,7 @@ class SignupViewModel : ViewModel() {
                     _signupSuccess.value = false
                 }
         } else {
-            Model.instance.signupNewUser(User(id = currentUserId, username = userName.lowercase(), firstName = firstName, lastName = lastName, email = email, avatarUrl = null, createdAt = System.currentTimeMillis())) {
+            Model.instance.signupNewUser(User(id = userId, username = userName.lowercase(), firstName = firstName, lastName = lastName, email = email, avatarUrl = null, createdAt = System.currentTimeMillis())) {
                 _signupSuccess.value = true
             }
         }

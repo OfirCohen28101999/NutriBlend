@@ -1,6 +1,8 @@
 package com.example.nutriblend.Model
 
+import android.util.Log
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
@@ -39,6 +41,26 @@ class FirebaseModel {
             }
         }
     }
+
+    fun getAllUserProfiles(since: Long, callback: (List<User>) -> Unit) {
+        db.collection(USERS_COLLECTION_PATH)
+            .whereGreaterThanOrEqualTo(User.LAST_UPDATED_KEY, Timestamp(since, 0))
+            .get()
+            .addOnCompleteListener{
+                when (it.isSuccessful) {
+                    true -> {
+                        val users: MutableList<User> = mutableListOf()
+                        for(json in it.result) {
+                            val user  = User.fromJson(json)
+                            users.add(user)
+                        }
+                        callback(users)
+                    }
+                    false -> callback(listOf())
+                }
+            }
+    }
+
     fun addRecipe(recipe: Recipe, callback: () -> Unit) {
         db.collection(RECIPES_COLLECTION_PATH)
             .add(recipe.json)
@@ -68,7 +90,17 @@ class FirebaseModel {
 
     fun signupNewUser(user: User, callback: () -> Unit) {
         db.collection(USERS_COLLECTION_PATH)
-            .add(user.json)
+            .document(user.id)
+            .set(user.json)
+            .addOnSuccessListener { documentReference ->
+                callback()
+            }
+    }
+
+    fun updateUserProfile(user: User, callback: () -> Unit) {
+        db.collection(USERS_COLLECTION_PATH)
+            .document(user.id)
+            .set(user.json,SetOptions.merge())
             .addOnSuccessListener { documentReference ->
                 callback()
             }

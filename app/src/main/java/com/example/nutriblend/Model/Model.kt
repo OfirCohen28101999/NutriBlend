@@ -14,8 +14,9 @@ class Model private constructor(){
     private val database = AppLocalDatabase.db
     private var executor = Executors.newSingleThreadExecutor()
     private val firebaseModel = FirebaseModel()
-    private val recipes: LiveData<MutableList<Recipe>>? = null
     val recipesListLoadingState: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.LOADED)
+    val userProfileLoadingState: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.LOADED)
+
 
     companion object {
         val instance: Model = Model()
@@ -23,7 +24,7 @@ class Model private constructor(){
 
     fun getAllRecipes(): LiveData<MutableList<Recipe>> {
         refreshAllRecipes()
-        return recipes ?: database.RecipeDao().getAll()
+        return database.RecipeDao().getAll()
     }
 
     fun getRecipeById(recipeId: String): LiveData<Recipe?> {
@@ -33,7 +34,7 @@ class Model private constructor(){
         recipesListLoadingState.value = LoadingState.LOADING
         val lastUpdated: Long = Recipe.lastUpdated
         firebaseModel.getAllRecipes(lastUpdated) {recipesList ->
-            Log.i("TAG", "Firebase returned ${recipesList.size}, lastUpdated: $lastUpdated")
+            Log.i("TAG", "Firebase returned ${recipesList.size} recipes, lastUpdated: $lastUpdated")
 
             executor.execute {
                 var time = lastUpdated
@@ -50,6 +51,31 @@ class Model private constructor(){
                 Recipe.lastUpdated = time
 
                 recipesListLoadingState.postValue(LoadingState.LOADED)
+            }
+        }
+    }
+
+    fun refreshAllUserProfiles() {
+        userProfileLoadingState.value = LoadingState.LOADING
+        val lastUpdated: Long = User.lastUpdated
+        firebaseModel.getAllUserProfiles(lastUpdated) {userProfilesList ->
+            Log.i("TAG", "Firebase returned ${userProfilesList.size} user profiles, lastUpdated: $lastUpdated")
+
+            executor.execute {
+                var time = lastUpdated
+                for (userProfile in userProfilesList) {
+                    database.UserDao().insert(userProfile)
+
+                    userProfile.lastUpdated?.let {
+                        if (time < it) {
+                            time = userProfile.lastUpdated ?: System.currentTimeMillis()
+                        }
+                    }
+                }
+
+                User.lastUpdated = time
+
+                userProfileLoadingState.postValue(LoadingState.LOADED)
             }
         }
     }
@@ -90,7 +116,21 @@ class Model private constructor(){
     }
 
     fun signupNewUser(user: User, callback: () -> Unit) {
+        userProfileLoadingState.postValue(LoadingState.LOADING)
+
         firebaseModel.signupNewUser(user) {
+            refreshAllUserProfiles()
+            callback()
+        }
+    }
+
+    fun getUserProfileById(userId: String): LiveData<User?> {
+        return database.UserDao().getUserById(userId)
+    }
+
+    fun updateUserProfile(user: User, callback: () -> Unit) {
+        firebaseModel.updateUserProfile(user) {
+            refreshAllUserProfiles()
             callback()
         }
     }

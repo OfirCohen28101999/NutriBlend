@@ -115,6 +115,10 @@ class RecipeFragment : Fragment() {
     }
 
     private fun insertRecipeValues(recipe: Recipe){
+        if(recipe.imageUrl != null){
+            Picasso.get().load(recipe.imageUrl).into(recipeImageView)
+
+        }
         recipeTitleTextView.setText(recipe.title)
         recipeIngredientsTextView.setText(recipe.ingredients)
         recipePrepStepsTextView.setText(recipe.preparationSteps)
@@ -140,6 +144,8 @@ class RecipeFragment : Fragment() {
                 getContent.launch(intent)
             }
         } else {
+            recipeImageView.setOnClickListener(null)
+
             saveBtn.visibility = View.GONE
             deleteBtn.visibility = View.GONE
 
