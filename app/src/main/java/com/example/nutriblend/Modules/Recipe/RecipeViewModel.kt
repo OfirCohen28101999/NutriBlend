@@ -63,25 +63,14 @@ class RecipeViewModel : ViewModel() {
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.let { nutritionalInfoList ->
-                            val summedUpNutritionalInfo: NutritionalInfo = ApiClient.sumUp(nutritionalInfoList)
-                            val updatedRecipe = Recipe(
-                                id = recipeId,
-                                title = title,
-                                ingredients = ingredients,
-                                preparationSteps = preparationSteps,
-                                imageUrl = imageUrl,
-                                creatingUserId = auth.currentUser?.uid!!,
-                                calories = summedUpNutritionalInfo.calories,
-                                sugar_g = summedUpNutritionalInfo.sugar_g,
-                                fiber_g = summedUpNutritionalInfo.fiber_g,
-                                sodium_mg = summedUpNutritionalInfo.sodium_mg,
-                                potassium_mg = summedUpNutritionalInfo.potassium_mg,
-                                fat_saturated_g = summedUpNutritionalInfo.fat_saturated_g,
-                                fat_total_g = summedUpNutritionalInfo.fat_total_g,
-                                cholesterol_mg = summedUpNutritionalInfo.cholesterol_mg,
-                                protein_g = summedUpNutritionalInfo.protein_g,
-                                carbohydrates_total_g = summedUpNutritionalInfo.carbohydrates_total_g
-                            )
+                            val updatedRecipe: Recipe =
+                                ApiClient.createRecipeWithNutritionalInfo(nutritionalInfoList,
+                                                                            recipeId,
+                                                                            title,
+                                                                            ingredients,
+                                                                            preparationSteps,
+                                                                            imageUrl,
+                                                                            auth.currentUser?.uid!!)
                             Model.instance.updateRecipe(updatedRecipe) {
                                 _isRecipeUpdatedSuccessfully.postValue(true)
                             }

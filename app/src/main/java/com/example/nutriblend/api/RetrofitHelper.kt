@@ -1,5 +1,6 @@
 package com.example.nutriblend.api
 
+import com.example.nutriblend.Model.Recipe
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -19,7 +20,13 @@ object ApiClient {
         RetrofitClient.retrofit.create(CalorieNinjasApi::class.java)
     }
 
-    fun sumUp(nutritionalInfoList: NutritionalInfoList): NutritionalInfo {
+    fun createRecipeWithNutritionalInfo(nutritionalInfoList: NutritionalInfoList,
+                                        recipeId: String,
+                                        title: String,
+                                        ingredients: String,
+                                        preparationSteps: String,
+                                        imageUrl: String?,
+                                        creatingUserId: String): Recipe {
         val summedUpNutritionalInfo: NutritionalInfo = NutritionalInfo(0.00,
             0.00,
             0.00,
@@ -49,6 +56,23 @@ object ApiClient {
             }
         }
 
-        return summedUpNutritionalInfo
+        return Recipe(
+            id = recipeId,
+            title = title,
+            ingredients = ingredients,
+            preparationSteps = preparationSteps,
+            imageUrl = imageUrl,
+            creatingUserId = creatingUserId,
+            calories = summedUpNutritionalInfo.calories,
+            sugar_g = summedUpNutritionalInfo.sugar_g,
+            fiber_g = summedUpNutritionalInfo.fiber_g,
+            sodium_mg = summedUpNutritionalInfo.sodium_mg,
+            potassium_mg = summedUpNutritionalInfo.potassium_mg,
+            fat_saturated_g = summedUpNutritionalInfo.fat_saturated_g,
+            fat_total_g = summedUpNutritionalInfo.fat_total_g,
+            cholesterol_mg = summedUpNutritionalInfo.cholesterol_mg,
+            protein_g = summedUpNutritionalInfo.protein_g,
+            carbohydrates_total_g = summedUpNutritionalInfo.carbohydrates_total_g
+        )
     }
 }
