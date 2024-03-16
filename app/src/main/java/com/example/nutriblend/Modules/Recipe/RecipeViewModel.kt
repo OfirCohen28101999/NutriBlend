@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.example.nutriblend.Model.Model
 import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.api.ApiClient
-import com.example.nutriblend.api.NutritionalInfo
 import com.example.nutriblend.api.NutritionalInfoList
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
@@ -31,30 +30,58 @@ class RecipeViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun updateRecipe(recipeId: String,previousImgUrl: String?,imageUri: Uri?, title: String, ingredients: String, preparationSteps: String) {
+    fun updateRecipe(recipe: Recipe,imageUri: Uri?, title: String, ingredients: String, preparationSteps: String) {
         _isLoading.value = true
         var imageUrl: String? = null
 
-        // todo: delete previousImgUrl if not null & check storage logic
-
         if (imageUri != null) {
-            val imageRef = storageReference.child("images/$recipeId.jpg")
+            val imageRef = storageReference.child("recipe images/${recipe.id}")
 
-            imageRef.putFile(imageUri)
-                .addOnSuccessListener {
-                    imageRef.downloadUrl.addOnSuccessListener { uri ->
-                        imageUrl = uri.toString()
+            imageRef.delete().addOnCompleteListener {
+                imageRef.putFile(imageUri)
+                    .addOnSuccessListener {
+                        imageRef.downloadUrl.addOnSuccessListener { uri ->
+                            imageUrl = uri.toString()
+
+                            val call = ApiClient.apiService.getNutritionalInfoList(ingredients)
+                            call.enqueue(object : Callback<NutritionalInfoList> {
+                                override fun onResponse(
+                                    call: Call<NutritionalInfoList>,
+                                    response: Response<NutritionalInfoList>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        response.body()?.let { nutritionalInfoList ->
+                                            val updatedRecipe: Recipe =
+                                                ApiClient.createRecipeWithNutritionalInfo(nutritionalInfoList,
+                                                    recipe.id,
+                                                    title,
+                                                    ingredients,
+                                                    preparationSteps,
+                                                    imageUrl,
+                                                    auth.currentUser?.uid!!)
+                                            Model.instance.updateRecipe(updatedRecipe) {
+                                                _isRecipeUpdatedSuccessfully.postValue(true)
+                                            }
+                                        }
+                                    } else {
+                                        _isRecipeUpdatedSuccessfully.postValue(false)
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<NutritionalInfoList>, t: Throwable) {
+//                                    _isRecipeUpdatedSuccessfully.postValue(false)
+                                }
+                            })
+                        }
                     }
-                }
-                .addOnFailureListener { e ->
-                    _isRecipeUpdatedSuccessfully.postValue(false)
-                }
+                    .addOnFailureListener {
+                        _isRecipeUpdatedSuccessfully.postValue(false)
+                    }
+            }
         }
 
         // if want to upload recipe && imageSuccess OR doesn't want to upload recipe image at all
         if ((imageUri != null && imageUrl != null) || (imageUri == null)) {
-
-            // get nutritional values from calorieNinja api todo: get rid of duplication somehow
             val call = ApiClient.apiService.getNutritionalInfoList(ingredients)
             call.enqueue(object : Callback<NutritionalInfoList> {
                 override fun onResponse(
@@ -65,7 +92,7 @@ class RecipeViewModel : ViewModel() {
                         response.body()?.let { nutritionalInfoList ->
                             val updatedRecipe: Recipe =
                                 ApiClient.createRecipeWithNutritionalInfo(nutritionalInfoList,
-                                                                            recipeId,
+                                                                            recipe.id,
                                                                             title,
                                                                             ingredients,
                                                                             preparationSteps,
@@ -75,9 +102,10 @@ class RecipeViewModel : ViewModel() {
                                 _isRecipeUpdatedSuccessfully.postValue(true)
                             }
                         }
-                    } else {
-                        _isRecipeUpdatedSuccessfully.postValue(false)
                     }
+//                    else {
+//                        _isRecipeUpdatedSuccessfully.postValue(false)
+//                    }
                 }
 
                 override fun onFailure(call: Call<NutritionalInfoList>, t: Throwable) {
@@ -91,28 +119,19 @@ class RecipeViewModel : ViewModel() {
 
     fun deleteRecipe(recipe: Recipe) {
         _isLoading.value = true
-        var imageUrl: String? = null
 
-        // todo: delete previousImgUrl = recipe.imageUrl if not null
+        if(recipe.imageUrl != null) {
+            val imageRef = storageReference.child("recipe images/${recipe.id}")
+            imageRef.delete().addOnSuccessListener {
+                Model.instance.deleteRecipe(recipe) { _isRecipeDeletedSuccessfully.postValue(true) }
+            }.addOnFailureListener {
+                _isRecipeUpdatedSuccessfully.postValue(false)
+            }
+        } else {
+            Model.instance.deleteRecipe(recipe) { _isRecipeDeletedSuccessfully.postValue(true) }
 
-//        if (imageUri != null) {
-//            val imageRef = storageReference.child("images/$recipeId.jpg")
-//
-//            imageRef.putFile(imageUri)
-//                .addOnSuccessListener {
-//                    imageRef.downloadUrl.addOnSuccessListener { uri ->
-//                        imageUrl = uri.toString()
-//                    }
-//                }
-//                .addOnFailureListener { e ->
-//                    _isRecipeUpdatedSuccessfully.postValue(false)
-//                }
-//        }
-
-        Model.instance.deleteRecipe(recipe) { _isRecipeDeletedSuccessfully.postValue(true) }
+        }
 
         _isLoading.value = false
     }
-
-
 }
