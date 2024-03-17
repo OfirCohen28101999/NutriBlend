@@ -51,6 +51,8 @@ class RecipesFragment : Fragment() {
             viewModel.recipes = Model.instance.getAllRecipes()
         }
 
+        viewModel.users = Model.instance.getAllUsers()
+
         recipesRecyclerView = binding.rvRecipesFragmentList
         recipesRecyclerView?.setHasFixedSize(true)
 
@@ -58,9 +60,9 @@ class RecipesFragment : Fragment() {
         recipesRecyclerView?.layoutManager = LinearLayoutManager(context)
 
         // set the adapter
-        recipesRecyclerView?.adapter = RecipesRecyclerAdapter(viewModel.recipes?.value)
+        recipesRecyclerView?.adapter = RecipesRecyclerAdapter(viewModel.recipes?.value, viewModel.users?.value)
 
-        adapter = RecipesRecyclerAdapter(viewModel.recipes?.value)
+        adapter = RecipesRecyclerAdapter(viewModel.recipes?.value, viewModel.users?.value)
 
         adapter?.listener = object : OnItemClickListener {
             override fun onItemClick(position: Int) {
@@ -79,12 +81,12 @@ class RecipesFragment : Fragment() {
 
         recipesRecyclerView?.adapter = adapter
 
-        val addRecipeBtn: ImageButton = binding.iBtnRecipesFragmentAddRecipe // view.findViewById(R.id.iBtnRecipesFragmentAddRecipe)
+        val addRecipeBtn: ImageButton = binding.iBtnRecipesFragmentAddRecipe
         val action = Navigation.createNavigateOnClickListener(RecipesFragmentDirections.actionGlobalAddRecipeFragment())
         addRecipeBtn.setOnClickListener(action)
 
         binding.pullToRefresh.setOnRefreshListener {
-            reloadRecipes()
+            reloadData()
         }
 
         Model.instance.recipesListLoadingState.observe(viewLifecycleOwner) { state ->
@@ -97,16 +99,23 @@ class RecipesFragment : Fragment() {
             progressBar?.visibility = View.GONE
         }
 
+        viewModel.users?.observe(viewLifecycleOwner) { users ->
+            adapter?.users = users
+            adapter?.notifyDataSetChanged()
+            progressBar?.visibility = View.GONE
+        }
+
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        reloadRecipes()
+        reloadData()
     }
-    private fun reloadRecipes() {
+    private fun reloadData() {
         progressBar?.visibility = View.VISIBLE
         Model.instance.refreshAllRecipes()
+        Model.instance.refreshAllUserProfiles()
         progressBar?.visibility = View.GONE
     }
     override fun onDestroy() {

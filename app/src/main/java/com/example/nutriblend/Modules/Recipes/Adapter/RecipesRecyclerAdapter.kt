@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriblend.Model.Recipe
+import com.example.nutriblend.Model.User
 import com.example.nutriblend.Modules.Recipes.OnItemClickListener
 import com.example.nutriblend.R
 
-class RecipesRecyclerAdapter(var recipes: List<Recipe>?): RecyclerView.Adapter<RecipeViewHolder>() {
+class RecipesRecyclerAdapter(var recipes: List<Recipe>?,var users: List<User>?): RecyclerView.Adapter<RecipeViewHolder>() {
 
     var listener: OnItemClickListener? = null
     override fun getItemCount(): Int = recipes?.size ?: 0
@@ -18,7 +19,8 @@ class RecipesRecyclerAdapter(var recipes: List<Recipe>?): RecyclerView.Adapter<R
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes?.get(position)
-        holder.bind(recipe)
+        val user = users?.find { user -> user.id == recipe?.creatingUserId }
+        holder.bind(recipe, user)
     }
 
 }
