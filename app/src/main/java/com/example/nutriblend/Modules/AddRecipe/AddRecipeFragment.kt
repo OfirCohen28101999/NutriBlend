@@ -107,11 +107,11 @@ class AddRecipeFragment : Fragment() {
             if (success) {
                 Toast.makeText(requireContext(), "Recipe ${recipeTitleTextBox.text} uploaded successfully", Toast.LENGTH_SHORT)
                     .show()
-                Navigation.findNavController(view).popBackStack(R.id.recipesFragment, false)
             } else {
                 Toast.makeText(requireContext(), "Failed to add Recipe ${recipeTitleTextBox.text}", Toast.LENGTH_SHORT).show()
-                Navigation.findNavController(view).popBackStack(R.id.recipesFragment, false)
             }
+
+            Navigation.findNavController(view).popBackStack(R.id.recipesFragment, false)
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->

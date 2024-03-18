@@ -40,4 +40,6 @@
     <string name="signout">signout</string>
     <string name="my_recipes">"My recipes "</string>
     <string name="by_user">By User:</string>
+    <string name="calc_add">Calc &amp; Add</string>
+    <string name="recalc_save">ReCalc &amp; Save</string>
 </resources>

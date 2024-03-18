@@ -60,21 +60,22 @@ class RecipeViewModel : ViewModel() {
                                                     imageUrl,
                                                     auth.currentUser?.uid!!)
                                             Model.instance.updateRecipe(updatedRecipe) {
+                                                // todo: check if working when theres a strong internet connection
                                                 _isRecipeUpdatedSuccessfully.postValue(true)
                                             }
                                         }
-                                    } else {
-                                        _isRecipeUpdatedSuccessfully.postValue(false)
                                     }
                                 }
 
                                 override fun onFailure(call: Call<NutritionalInfoList>, t: Throwable) {
-//                                    _isRecipeUpdatedSuccessfully.postValue(false)
+                                    // todo: check if working when theres a strong internet connection
+                                    throw t
                                 }
                             })
                         }
                     }
                     .addOnFailureListener {
+                        // todo: check if working when theres a strong internet connection
                         _isRecipeUpdatedSuccessfully.postValue(false)
                     }
             }
@@ -99,16 +100,15 @@ class RecipeViewModel : ViewModel() {
                                                                             imageUrl,
                                                                             auth.currentUser?.uid!!)
                             Model.instance.updateRecipe(updatedRecipe) {
+                                // todo: check if working when theres a strong internet connection
                                 _isRecipeUpdatedSuccessfully.postValue(true)
                             }
                         }
                     }
-//                    else {
-//                        _isRecipeUpdatedSuccessfully.postValue(false)
-//                    }
                 }
 
                 override fun onFailure(call: Call<NutritionalInfoList>, t: Throwable) {
+                    // todo: check if working when theres a strong internet connection
                     _isRecipeUpdatedSuccessfully.postValue(false)
                 }
             })
@@ -129,7 +129,6 @@ class RecipeViewModel : ViewModel() {
             }
         } else {
             Model.instance.deleteRecipe(recipe) { _isRecipeDeletedSuccessfully.postValue(true) }
-
         }
 
         _isLoading.value = false

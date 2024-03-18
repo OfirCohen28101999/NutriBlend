@@ -86,9 +86,11 @@ class RecipeFragment : Fragment() {
 
     private fun setupUI(recipe: Recipe?, view: View) {
         bindElements()
-        insertRecipeValues(recipe!!)
-        changeEditViewBasedOnCurrentUser(recipe)
-        initListeners(recipe)
+        if(recipe != null){
+            insertRecipeValues(recipe)
+            changeEditViewBasedOnCurrentUser(recipe)
+            initListeners(recipe)
+        }
         observeActionStatuses(view)
     }
 
@@ -181,6 +183,7 @@ class RecipeFragment : Fragment() {
     private fun observeActionStatuses(view: View){
 
         // TODO: bug: happens 3 times for some reason
+        // todo: check if working when theres a strong internet connection
         viewModel.isRecipeUpdatedSuccessfully.observe(viewLifecycleOwner) { success ->
             if (success) {
                 Toast.makeText(requireContext(), "Recipe ${recipeTitleTextView.text} updated successfully", Toast.LENGTH_SHORT)

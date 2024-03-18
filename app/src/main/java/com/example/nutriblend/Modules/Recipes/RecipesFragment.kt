@@ -23,15 +23,17 @@ import com.google.firebase.auth.FirebaseAuth
 class RecipesFragment : Fragment() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    private var recipesRecyclerView: RecyclerView? = null
-    private var adapter: RecipesRecyclerAdapter? = null
-    private var progressBar: ProgressBar? = null
+    private lateinit var recipesRecyclerView: RecyclerView
+    private lateinit var adapter: RecipesRecyclerAdapter
+    private lateinit var progressBar: ProgressBar
     private var _binding:  FragmentRecipesBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: RecipesViewModel
 
     private val args: RecipesFragmentArgs by navArgs()
+
+    private lateinit var addRecipeBtn: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +44,24 @@ class RecipesFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[RecipesViewModel::class.java]
 
-        progressBar = binding.progressBar
-        progressBar?.visibility = View.VISIBLE
+        bindElements()
 
+        recipesRecyclerView.layoutManager = LinearLayoutManager(context)
+
+        recipesRecyclerView.adapter = RecipesRecyclerAdapter(viewModel.recipes?.value, viewModel.users?.value)
+
+        adapter = RecipesRecyclerAdapter(viewModel.recipes?.value, viewModel.users?.value)
+
+        recipesRecyclerView.adapter = adapter
+
+        bindLiveDataToViewModel()
+        setListeners(view)
+        setDataObservers()
+
+        return view
+    }
+
+    private fun bindLiveDataToViewModel() {
         if (args.isMyRecipes) {
             viewModel.recipes = Model.instance.getMyRecipes(auth.currentUser?.uid!!)
         } else {
@@ -52,19 +69,26 @@ class RecipesFragment : Fragment() {
         }
 
         viewModel.users = Model.instance.getAllUsers()
+    }
 
+    private fun bindElements(){
+        progressBar = binding.progressBar
+        progressBar.visibility = View.VISIBLE
+        addRecipeBtn = binding.iBtnRecipesFragmentAddRecipe
         recipesRecyclerView = binding.rvRecipesFragmentList
-        recipesRecyclerView?.setHasFixedSize(true)
+        recipesRecyclerView.setHasFixedSize(true)
+    }
+    private fun setListeners(view: View) {
+        addRecipeBtn.setOnClickListener {
+            val action = RecipesFragmentDirections.actionRecipesFragmentToAddRecipeFragment()
+            Navigation.findNavController(view).navigate(action)
+        }
 
-        // set layout manager
-        recipesRecyclerView?.layoutManager = LinearLayoutManager(context)
+        binding.pullToRefresh.setOnRefreshListener {
+            reloadData()
+        }
 
-        // set the adapter
-        recipesRecyclerView?.adapter = RecipesRecyclerAdapter(viewModel.recipes?.value, viewModel.users?.value)
-
-        adapter = RecipesRecyclerAdapter(viewModel.recipes?.value, viewModel.users?.value)
-
-        adapter?.listener = object : OnItemClickListener {
+        adapter.listener = object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val recipe = viewModel.recipes?.value?.get(position)
 
@@ -78,45 +102,33 @@ class RecipesFragment : Fragment() {
                 Log.i("TAG","RecipesRecyclerAdapter: RECIPE $recipe")
             }
         }
-
-        recipesRecyclerView?.adapter = adapter
-
-        val addRecipeBtn: ImageButton = binding.iBtnRecipesFragmentAddRecipe
-        val action = Navigation.createNavigateOnClickListener(RecipesFragmentDirections.actionGlobalAddRecipeFragment())
-        addRecipeBtn.setOnClickListener(action)
-
-        binding.pullToRefresh.setOnRefreshListener {
-            reloadData()
-        }
-
+    }
+    private fun setDataObservers() {
         Model.instance.recipesListLoadingState.observe(viewLifecycleOwner) { state ->
             binding.pullToRefresh.isRefreshing = state == Model.LoadingState.LOADING
         }
 
         viewModel.recipes?.observe(viewLifecycleOwner) { recipes ->
-            adapter?.recipes = recipes
-            adapter?.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
+            adapter.recipes = recipes
+            adapter.notifyDataSetChanged()
+            progressBar.visibility = View.GONE
         }
 
         viewModel.users?.observe(viewLifecycleOwner) { users ->
-            adapter?.users = users
-            adapter?.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
+            adapter.users = users
+            adapter.notifyDataSetChanged()
+            progressBar.visibility = View.GONE
         }
-
-        return view
     }
-
     override fun onResume() {
         super.onResume()
         reloadData()
     }
     private fun reloadData() {
-        progressBar?.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
         Model.instance.refreshAllRecipes()
         Model.instance.refreshAllUserProfiles()
-        progressBar?.visibility = View.GONE
+        progressBar.visibility = View.GONE
     }
     override fun onDestroy() {
         super.onDestroy()
