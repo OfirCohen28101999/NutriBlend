@@ -125,7 +125,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cancelRecipeBtn"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/button_background"
+        app:backgroundTint="@color/button_color_state"/>
 
     <Button
         android:id="@+id/cancelRecipeBtn"
@@ -137,7 +139,9 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/saveRecipeBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/saveRecipeBtn" />
+        app:layout_constraintStart_toEndOf="@+id/saveRecipeBtn"
+        android:background="@drawable/button_background"
+        app:backgroundTint="@color/button_color_state"/>
 
     <ProgressBar
         android:id="@+id/progressBarAddRecipeFragment"

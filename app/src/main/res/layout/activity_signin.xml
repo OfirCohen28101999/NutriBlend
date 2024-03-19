@@ -15,7 +15,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         android:text="@string/app_name"
-        android:textColor="#FF9800"
+        android:textColor="@color/orange"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/signinEmailEditText"
@@ -67,7 +67,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinPasswordEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/signinPasswordEditText"
+        android:background="@drawable/button_background"
+        app:backgroundTint="@color/button_color_state"/>
 
     <TextView
         android:id="@+id/signUpTextView"
@@ -101,5 +103,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpTextView"
+        android:background="@drawable/button_background"
+        app:backgroundTint="@color/button_color_state"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

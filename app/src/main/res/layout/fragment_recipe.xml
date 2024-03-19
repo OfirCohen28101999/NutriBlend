@@ -291,7 +291,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/deleteRecipeBtnFragmentRecipe"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/button_background"
+        app:backgroundTint="@color/button_color_state"/>
 
     <Button
         android:id="@+id/deleteRecipeBtnFragmentRecipe"
@@ -304,7 +306,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/saveRecipeBtnFragmentRecipe" />
+        app:layout_constraintStart_toEndOf="@+id/saveRecipeBtnFragmentRecipe"
+        android:background="@drawable/button_background"
+        app:backgroundTint="@color/button_color_state"/>
 
     <TextView
         android:id="@+id/caloriesValueTextView"

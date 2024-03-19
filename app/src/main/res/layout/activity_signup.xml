@@ -118,7 +118,9 @@
         android:text="@string/signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpPasswordEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpPasswordEditText"
+        android:background="@drawable/button_background"
+        app:backgroundTint="@color/button_color_state"/>
 
     <TextView
         android:id="@+id/signinTextView"
@@ -152,5 +154,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signinTextView"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:background="@drawable/button_background"
+        app:backgroundTint="@color/button_color_state"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
