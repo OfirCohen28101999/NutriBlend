@@ -3,7 +3,6 @@ package com.example.nutriblend.Modules.AddRecipe
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import com.squareup.picasso.Picasso
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -21,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.nutriblend.R
 import com.example.nutriblend.databinding.FragmentAddRecipeBinding
+import com.squareup.picasso.Picasso
 
 class AddRecipeFragment : Fragment() {
     private var _binding:  FragmentAddRecipeBinding? = null

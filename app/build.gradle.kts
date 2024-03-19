@@ -76,6 +76,7 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
