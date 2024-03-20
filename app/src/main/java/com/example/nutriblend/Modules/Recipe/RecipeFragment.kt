@@ -22,6 +22,7 @@ import com.example.nutriblend.Model.Model
 import com.example.nutriblend.Model.Recipe
 import com.example.nutriblend.R
 import com.example.nutriblend.databinding.FragmentRecipeBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
@@ -50,6 +51,8 @@ class RecipeFragment : Fragment() {
 
     private lateinit var saveBtn: Button
     private lateinit var deleteBtn: Button
+    private lateinit var cancelBtn: Button
+    private lateinit var editRecipeFloatingActionButton: FloatingActionButton
     private lateinit var progressBar: ProgressBar
 
     private var selectedImageUri: Uri? = null
@@ -89,6 +92,7 @@ class RecipeFragment : Fragment() {
         if(recipe != null){
             insertRecipeValues(recipe)
             changeEditViewBasedOnCurrentUser(recipe)
+            editableUi(false)
             initListeners(recipe)
         }
         observeActionStatuses(view)
@@ -99,6 +103,9 @@ class RecipeFragment : Fragment() {
         progressBar = binding.progressBarRecipeFragment
         saveBtn = binding.saveRecipeBtnFragmentRecipe
         deleteBtn = binding.deleteRecipeBtnFragmentRecipe
+        cancelBtn = binding.cancelRecipeEditBtnFragmentRecipe
+        editRecipeFloatingActionButton = binding.editRecipeFloatingActionButton
+
         recipeTitleTextView = binding.recipeTitleTextBoxFragmentRecipe
         recipeIngredientsTextView = binding.recipeIngredientsTextBoxFragmentRecipe
         recipePrepStepsTextView = binding.recipePreparationStepsTextBoxFragmentRecipe
@@ -137,19 +144,53 @@ class RecipeFragment : Fragment() {
     }
     private fun changeEditViewBasedOnCurrentUser(recipe: Recipe) {
         if(auth.currentUser?.uid!! == recipe.creatingUserId) {
+            editRecipeFloatingActionButton.visibility = View.VISIBLE
+        } else {
+            editRecipeFloatingActionButton.visibility = View.GONE
+            editRecipeFloatingActionButton.hide()
+        }
+    }
+    private fun editableUi(isEditable: Boolean) {
+        if(isEditable) {
             saveBtn.visibility = View.VISIBLE
             deleteBtn.visibility = View.VISIBLE
+            cancelBtn.visibility = View.VISIBLE
 
             recipeImageView.setOnClickListener {
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.type = "image/*"
                 getContent.launch(intent)
             }
+
+            recipeTitleTextView.isEnabled = true
+            recipeTitleTextView.isFocusable = true
+            recipeTitleTextView.isFocusableInTouchMode = true
+            recipeTitleTextView.setTextColor(Color.BLACK)
+
+            recipeIngredientsTextView.isEnabled = true
+            recipeIngredientsTextView.isFocusable = true
+            recipeIngredientsTextView.isFocusableInTouchMode = true
+            recipeIngredientsTextView.setTextColor(Color.BLACK)
+
+            recipePrepStepsTextView.isEnabled = true
+            recipePrepStepsTextView.isFocusable = true
+            recipePrepStepsTextView.isFocusableInTouchMode = true
+            recipePrepStepsTextView.setTextColor(Color.BLACK)
+
+            saveBtn.isClickable = true
+            saveBtn.isActivated = true
+
+            deleteBtn.isClickable = true
+            deleteBtn.isActivated = true
+
+            cancelBtn.isClickable = true
+            cancelBtn.isActivated = true
         } else {
             recipeImageView.setOnClickListener(null)
 
             saveBtn.visibility = View.GONE
             deleteBtn.visibility = View.GONE
+            cancelBtn.visibility = View.GONE
 
             recipeTitleTextView.isEnabled = false
             recipeTitleTextView.isFocusable = false
@@ -165,9 +206,30 @@ class RecipeFragment : Fragment() {
             recipePrepStepsTextView.isFocusable = false
             recipePrepStepsTextView.isFocusableInTouchMode = false
             recipePrepStepsTextView.setTextColor(Color.BLACK)
+
+            saveBtn.isClickable = false
+            saveBtn.isActivated = false
+
+            deleteBtn.isClickable = false
+            deleteBtn.isActivated = false
+
+            cancelBtn.isClickable = false
+            cancelBtn.isActivated = false
         }
     }
+
     private fun initListeners(recipe: Recipe){
+        cancelBtn.setOnClickListener{
+            editRecipeFloatingActionButton.visibility = View.VISIBLE
+            insertRecipeValues(recipe)
+            editableUi(false)
+        }
+
+        editRecipeFloatingActionButton.setOnClickListener {
+            editRecipeFloatingActionButton.visibility = View.GONE
+            editableUi(true)
+        }
+
         deleteBtn.setOnClickListener{
             viewModel.deleteRecipe(recipe)
         }
