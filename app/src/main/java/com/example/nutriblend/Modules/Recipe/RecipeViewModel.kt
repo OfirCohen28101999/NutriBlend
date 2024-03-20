@@ -128,7 +128,9 @@ class RecipeViewModel : ViewModel() {
                 _isRecipeUpdatedSuccessfully.postValue(false)
             }
         } else {
-            Model.instance.deleteRecipe(recipe) { _isRecipeDeletedSuccessfully.postValue(true) }
+            Model.instance.deleteRecipe(recipe) {
+                _isRecipeDeletedSuccessfully.postValue(true)
+            }
         }
 
         _isLoading.value = false

@@ -46,12 +46,12 @@
         android:layout_marginBottom="2dp"
         android:text="@string/recipe_ingredients_textview"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipeIngredientsTextBoxFragmentRecipe"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeImageFragmentRecipe"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeImageFragmentRecipe" />
 
     <TextView
         android:id="@+id/recipeStepsTextviewFragmentRecipe"
@@ -63,12 +63,12 @@
         android:layout_marginBottom="2dp"
         android:text="@string/recipe_preparation_steps_textview"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipePreparationStepsTextBoxFragmentRecipe"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeIngredientsTextBoxFragmentRecipe"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeIngredientsTextBoxFragmentRecipe" />
 
     <EditText
         android:id="@+id/recipeTitleTextBoxFragmentRecipe"
@@ -97,6 +97,8 @@
         android:autofillHints=""
         android:ems="10"
         android:gravity="start"
+        android:inputType="textMultiLine"
+        android:minLines="3"
         android:selectAllOnFocus="false"
         android:singleLine="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -104,9 +106,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipeIngredientsTextviewFragmentRecipe"
-        tools:ignore="LabelFor"
-        android:inputType="textMultiLine"
-        android:minLines="3"/>
+        tools:ignore="LabelFor" />
 
     <EditText
         android:id="@+id/recipePreparationStepsTextBoxFragmentRecipe"
@@ -120,6 +120,8 @@
         android:ems="10"
         android:freezesText="false"
         android:gravity="start"
+        android:inputType="textMultiLine"
+        android:minLines="3"
         android:singleLine="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintBottom_toTopOf="@+id/recipeCaloriesTextView"
@@ -127,9 +129,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipeStepsTextviewFragmentRecipe"
-        tools:ignore="LabelFor"
-        android:inputType="textMultiLine"
-        android:minLines="3"/>
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/recipeCaloriesTextView"
@@ -140,12 +140,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
         android:text="@string/calories"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipeTotalFatTextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipePreparationStepsTextBoxFragmentRecipe"
-        app:layout_constraintVertical_bias="1.0"
-        android:textStyle="bold"/>
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/recipeTotalFatTextView"
@@ -156,11 +156,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
         android:text="@string/total_fat_g"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipeSaturatedFatTextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeCaloriesTextView"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeCaloriesTextView" />
 
     <TextView
         android:id="@+id/recipeSaturatedFatTextView"
@@ -171,11 +171,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
         android:text="@string/saturated_fat_g"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipeProteinTextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeTotalFatTextView"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeTotalFatTextView" />
 
     <TextView
         android:id="@+id/recipeProteinTextView"
@@ -186,11 +186,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
         android:text="@string/protein_g"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipeSodiumTextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeSaturatedFatTextView"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeSaturatedFatTextView" />
 
     <TextView
         android:id="@+id/recipeSodiumTextView"
@@ -201,11 +201,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
         android:text="@string/sodium_mg"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipePotassiumTextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeProteinTextView"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeProteinTextView" />
 
     <TextView
         android:id="@+id/recipePotassiumTextView"
@@ -216,11 +216,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
         android:text="@string/potassium_mg"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipeCarbohydratesTextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeSodiumTextView"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeSodiumTextView" />
 
     <TextView
         android:id="@+id/recipeCholesterolTextView"
@@ -230,10 +230,10 @@
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:text="@string/cholesterol_mg"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipeSugarTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeCarbohydratesTextView"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeCarbohydratesTextView" />
 
     <TextView
         android:id="@+id/recipeCarbohydratesTextView"
@@ -244,11 +244,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
         android:text="@string/carbohydrates_g"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipeCholesterolTextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipePotassiumTextView"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipePotassiumTextView" />
 
     <TextView
         android:id="@+id/recipeFiberTextView"
@@ -259,11 +259,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
         android:text="@string/fiber_g"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/saveRecipeBtnFragmentRecipe"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeSugarTextView"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeSugarTextView" />
 
     <TextView
         android:id="@+id/recipeSugarTextView"
@@ -274,41 +274,54 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
         android:text="@string/sugar_g"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recipeFiberTextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeCholesterolTextView"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipeCholesterolTextView" />
 
     <Button
         android:id="@+id/saveRecipeBtnFragmentRecipe"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_background"
         android:text="@string/recalc_save"
+        app:backgroundTint="@color/button_color_state"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/deleteRecipeBtnFragmentRecipe"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/button_background"
-        app:backgroundTint="@color/button_color_state"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/deleteRecipeBtnFragmentRecipe"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_background"
         android:text="@string/delete"
+        app:backgroundTint="@color/button_color_state"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cancelRecipeEditBtnFragmentRecipe"
+        app:layout_constraintStart_toEndOf="@+id/saveRecipeBtnFragmentRecipe" />
+
+    <Button
+        android:id="@+id/cancelRecipeEditBtnFragmentRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_background"
+        android:text="@string/cancel"
+        app:backgroundTint="@color/button_color_state"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/saveRecipeBtnFragmentRecipe"
-        android:background="@drawable/button_background"
-        app:backgroundTint="@color/button_color_state"/>
+        app:layout_constraintStart_toEndOf="@+id/deleteRecipeBtnFragmentRecipe" />
 
     <TextView
         android:id="@+id/caloriesValueTextView"
@@ -460,16 +473,28 @@
         app:layout_constraintBottom_toTopOf="@+id/saveRecipeBtnFragmentRecipe"
         app:layout_constraintGuide_end="286dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipePreparationStepsTextBoxFragmentRecipe"/>
+        app:layout_constraintTop_toBottomOf="@+id/recipePreparationStepsTextBoxFragmentRecipe" />
 
     <ProgressBar
         android:id="@+id/progressBarRecipeFragment"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editRecipeFloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="editRecipe"
+        android:src="@android:drawable/ic_menu_edit"
+        app:backgroundTint="@color/light_orange"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -107,7 +107,9 @@
         android:src="@android:drawable/ic_menu_edit"
         app:layout_anchorGravity="bottom|end"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="@color/light_orange"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottomProfileValuesGuideline"
